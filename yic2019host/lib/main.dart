@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme:
-          ThemeData(primarySwatch: Colors.indigo, fontFamily: 'Product Sans'),
+          ThemeData(primarySwatch: Colors.indigo, fontFamily: 'Open Sans'),
       home: LoadingScreen(),
     );
   }
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                     )
                   : Container(
                       margin: EdgeInsets.only(left: 30, top: 10),
-                      height: 300,
+                      height: 320,
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
@@ -376,7 +376,7 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
           child: Hero(
         tag: 'visitorCard' + widget.cardCount.toString(),
         child: Container(
-            height: 460,
+            height: 480,
             width: 300,
             margin: EdgeInsets.only(right: 10),
             decoration: BoxDecoration(

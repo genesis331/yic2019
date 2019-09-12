@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme:
-      ThemeData(primarySwatch: Colors.indigo, fontFamily: 'Product Sans'),
+      ThemeData(primarySwatch: Colors.indigo, fontFamily: 'Open Sans'),
       home: LoadingScreen(),
     );
   }
