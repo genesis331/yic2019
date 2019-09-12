@@ -3,6 +3,7 @@ import 'package:barcode_flutter/barcode_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/services.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
 
@@ -12,8 +13,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme:
-          ThemeData(primarySwatch: Colors.indigo, fontFamily: 'Open Sans'),
+      theme: ThemeData(
+          primarySwatch: Colors.indigo,
+          fontFamily: 'Open Sans',
+          textTheme: TextTheme(body1: TextStyle(color: Colors.white))),
       home: LoadingScreen(),
     );
   }
@@ -26,7 +29,7 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   var upcomingVisitorsRef =
-      FirebaseDatabase.instance.reference().child('data').limitToFirst(5);
+      FirebaseDatabase.instance.reference().child('data').limitToFirst(3);
 
   @override
   void initState() {
@@ -56,12 +59,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
             child: Column(
               children: <Widget>[
                 Text('IntelliGuard',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 38,
-                        fontWeight: FontWeight.bold)),
-                Text('for Hosts',
-                    style: TextStyle(color: Colors.white, fontSize: 22)),
+                    style:
+                        TextStyle(fontSize: 38, fontWeight: FontWeight.bold)),
+                Text('for Hosts', style: TextStyle(fontSize: 22)),
                 Container(
                   padding: EdgeInsets.only(top: 50),
                   child: CircularProgressIndicator(),
@@ -84,20 +84,101 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var upcomingVisitorsRef =
       FirebaseDatabase.instance.reference().child('data').limitToFirst(5);
+  var allVisitorsRef = FirebaseDatabase.instance.reference().child('data');
 
   void launchBottomSheet() {
     showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         builder: (BuildContext context) => Container(
-              height: 100,
+              height: 600,
               color: Color(0xFF000000),
               child: new Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30.0),
-                        topRight: Radius.circular(30.0))),
-              ),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0))),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(left: 30, top: 60),
+                            child: Text('Visitor Registration',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, top: 35, right: 40),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: "Visitor\'s Name",
+                              fillColor: Colors.white,
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(5.0),
+                                borderSide: new BorderSide(),
+                              )),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, top: 25, right: 40),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: 'Visitor\'s Company',
+                              fillColor: Colors.white,
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(5.0),
+                                borderSide: new BorderSide(),
+                              )),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, top: 25, right: 40),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: 'Visiting Date',
+                              fillColor: Colors.white,
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(5.0),
+                                borderSide: new BorderSide(),
+                              )),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 40, top: 25, right: 40),
+                        child: TextField(
+                          decoration: InputDecoration(
+                              labelText: 'Visitor\'s IC Number',
+                              fillColor: Colors.white,
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(5.0),
+                                borderSide: new BorderSide(),
+                              )),
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(left: 40, top: 65, right: 40),
+                          child: ButtonTheme(
+                            height: 50,
+                            minWidth: 200,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                            child: new RaisedButton.icon(
+                              onPressed: null,
+                              icon: Icon(Icons.add),
+                              label: Text("Register"),
+                              color: Colors.indigo,
+                              textColor: Color.fromRGBO(255, 255, 255, 0.9),
+                            ),
+                          )),
+                    ],
+                  )),
             ));
   }
 
@@ -119,9 +200,7 @@ class _HomePageState extends State<HomePage> {
               margin: EdgeInsets.only(left: 35),
               child: Row(
                 children: <Widget>[
-                  Text("Upcoming Visitors",
-                      style: TextStyle(color: Colors.white),
-                      textAlign: TextAlign.left)
+                  Text("Upcoming Visitors", textAlign: TextAlign.left)
                 ],
               )),
           StreamBuilder(
@@ -200,7 +279,6 @@ class _HomePageState extends State<HomePage> {
                                                       snap.data.snapshot
                                                           .value[index]['date'],
                                                       style: TextStyle(
-                                                          color: Colors.white,
                                                           fontSize: 25)),
                                                 ),
                                                 padding: EdgeInsets.only(
@@ -235,7 +313,6 @@ class _HomePageState extends State<HomePage> {
                                                       snap.data.snapshot
                                                           .value[index]['name'],
                                                       style: TextStyle(
-                                                          color: Colors.white,
                                                           fontSize: 25)),
                                                 ),
                                                 padding: EdgeInsets.only(
@@ -271,7 +348,6 @@ class _HomePageState extends State<HomePage> {
                                                               .value[index]
                                                           ['company'],
                                                       style: TextStyle(
-                                                          color: Colors.white,
                                                           fontSize: 25)),
                                                 ),
                                                 padding: EdgeInsets.only(
@@ -285,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                                                 child: new Material(
                                                   color: Colors.transparent,
                                                   child: Text(
-                                                      'Press card to do more',
+                                                      'Long press card to do more',
                                                       style: TextStyle(
                                                           color: Color.fromRGBO(
                                                               255,
@@ -309,25 +385,37 @@ class _HomePageState extends State<HomePage> {
                       ));
             },
           ),
-          Container(
-            padding: EdgeInsets.only(top: 10, left: 30),
-            child: Row(
-              children: <Widget>[
-                ButtonTheme(
-                  height: 50,
-                  shape: new RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  child: new RaisedButton.icon(
-                    onPressed: launchBottomSheet,
-                    icon: Icon(Icons.more_horiz),
-                    label: Text("See All"),
-                    color: Colors.indigo,
-                    textColor: Color.fromRGBO(255, 255, 255, 0.9),
+          StreamBuilder(
+              stream: upcomingVisitorsRef.onValue,
+              builder: (context, snap) {
+                return Container(
+                  padding: EdgeInsets.only(top: 10, left: 30),
+                  child: Row(
+                    children: <Widget>[
+                      ButtonTheme(
+                        height: 50,
+                        shape: new RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0))),
+                        child: new RaisedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AllVisitorScreen(
+                                        dbdata: snap.data.snapshot.value,
+                                        dbref: allVisitorsRef)));
+                          },
+                          icon: Icon(Icons.more_horiz),
+                          label: Text("See All"),
+                          color: Colors.indigo,
+                          textColor: Color.fromRGBO(255, 255, 255, 0.9),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            ),
-          ),
+                );
+              }),
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -362,7 +450,6 @@ class VisitorOverviewScreen extends StatefulWidget {
   final dynamic dbdata;
   VisitorOverviewScreen({Key key, this.cardCount, this.dbdata})
       : super(key: key);
-
   @override
   _VisitorOverviewScreenState createState() => _VisitorOverviewScreenState();
 }
@@ -370,6 +457,7 @@ class VisitorOverviewScreen extends StatefulWidget {
 class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
   @override
   Widget build(BuildContext context) {
+    HapticFeedback.lightImpact();
     return Scaffold(
       backgroundColor: Colors.black,
       body: Center(
@@ -411,8 +499,7 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                         child: new Material(
                           color: Colors.transparent,
                           child: Text(widget.dbdata[widget.cardCount]['date'],
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25)),
+                              style: TextStyle(fontSize: 25)),
                         ),
                         padding: EdgeInsets.only(top: 5, left: 30),
                       )
@@ -437,8 +524,7 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                         child: new Material(
                           color: Colors.transparent,
                           child: Text(widget.dbdata[widget.cardCount]['name'],
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25)),
+                              style: TextStyle(fontSize: 25)),
                         ),
                         padding: EdgeInsets.only(top: 5, left: 30),
                       )
@@ -464,8 +550,7 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                           color: Colors.transparent,
                           child: Text(
                               widget.dbdata[widget.cardCount]['company'],
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25)),
+                              style: TextStyle(fontSize: 25)),
                         ),
                         padding: EdgeInsets.only(top: 5, left: 30),
                       )
@@ -490,8 +575,7 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                         child: new Material(
                           color: Colors.transparent,
                           child: Text(widget.dbdata[widget.cardCount]['icno'],
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25)),
+                              style: TextStyle(fontSize: 25)),
                         ),
                         padding: EdgeInsets.only(top: 5, left: 30),
                       )
@@ -521,9 +605,9 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                                   .toString(),
                               codeType: BarCodeType.Code39,
                               lineWidth: 1.75,
-                              barHeight: 90.0,
+                              barHeight: 80.0,
                             )),
-                        padding: EdgeInsets.only(top: 18),
+                        padding: EdgeInsets.only(top: 10),
                       )
                     ],
                   ),
@@ -532,6 +616,157 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
             )),
       )),
     );
+  }
+}
+
+class AllVisitorScreen extends StatefulWidget {
+  final dynamic dbdata;
+  final dynamic dbref;
+  AllVisitorScreen({Key key, this.dbdata, this.dbref}) : super(key: key);
+  @override
+  _AllVisitorScreenState createState() => _AllVisitorScreenState();
+}
+
+class _AllVisitorScreenState extends State<AllVisitorScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.black,
+        body: Column(children: <Widget>[
+          Container(
+              padding: EdgeInsets.fromLTRB(0, 30, 0, 10),
+              child: AppBar(
+                backgroundColor: Colors.transparent,
+                title: Text('Visitors',
+                    style:
+                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+              )),
+          StreamBuilder(
+            stream: widget.dbref.onValue,
+            builder: (context, snap) {
+              return snap.data.snapshot.value == null
+                  ? SizedBox(
+                      height: 520,
+                    )
+                  : Container(
+                      height: 520,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: snap.data.snapshot.value.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                              onLongPress: () {
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (c, a1, a2) =>
+                                          VisitorOverviewScreen(
+                                              cardCount: index,
+                                              dbdata: snap.data.snapshot.value),
+                                      transitionDuration:
+                                          Duration(milliseconds: 400),
+                                    ));
+                              },
+                              child: Hero(
+                                tag: 'visitorCard' + index.toString(),
+                                child: Container(
+                                    height: 200,
+                                    width: 300,
+                                    margin: EdgeInsets.only(
+                                        left: 20, right: 20, bottom: 10),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          Colors.indigo[800],
+                                          Colors.indigo[400],
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+                                    child: Container(
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                  padding: EdgeInsets.only(
+                                                      top: 25, left: 30),
+                                                  child: new Material(
+                                                    color: Colors.transparent,
+                                                    child: Text('Visiting Date',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    0.8))),
+                                                  ))
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: new Material(
+                                                  color: Colors.transparent,
+                                                  child: Text(
+                                                      snap.data.snapshot
+                                                          .value[index]['date'],
+                                                      style: TextStyle(
+                                                          fontSize: 25)),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    top: 5, left: 30),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: new Material(
+                                                  color: Colors.transparent,
+                                                  child: Text('Visitor Name',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              0.8))),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    top: 18, left: 30),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: new Material(
+                                                  color: Colors.transparent,
+                                                  child: Text(
+                                                      snap.data.snapshot
+                                                          .value[index]['name'],
+                                                      style: TextStyle(
+                                                          fontSize: 25)),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    top: 5, left: 30),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ));
+                        },
+                      ));
+            },
+          ),
+        ]));
   }
 }
 
