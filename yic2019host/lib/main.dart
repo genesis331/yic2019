@@ -28,23 +28,15 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  var upcomingVisitorsRef =
-      FirebaseDatabase.instance.reference().child('data').limitToFirst(3);
-
   @override
   void initState() {
     super.initState();
-    databaseReference.child('/data').once().then((DataSnapshot snapshot) {
-      return snapshot.value != null
-          ? Navigator.of(context).pushReplacement(PageRouteBuilder(
-              pageBuilder: (c, a1, a2) => HomePage(),
-              transitionsBuilder: (c, anim, a2, child) =>
-                  FadeTransition(opacity: anim, child: child),
-              transitionDuration: Duration(milliseconds: 1500),
-            ))
-          : Scaffold.of(context).showSnackBar(SnackBar(
-              content:
-                  Text('Please make sure you\'re connected to the Internet.')));
+    databaseReference.child('/').once().then((DataSnapshot snapshot) {
+      Navigator.of(context).pushReplacement(PageRouteBuilder(
+          pageBuilder: (c, a1, a2) => HomePage(),
+          transitionsBuilder: (c, anim, a2, child) =>
+              FadeTransition(opacity: anim, child: child),
+          transitionDuration: Duration(milliseconds: 1500)));
     });
   }
 
@@ -82,15 +74,97 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  dynamic formName;
+  dynamic formCompany;
+  dynamic formDate;
+  dynamic formICNo;
   var upcomingVisitorsRef =
       FirebaseDatabase.instance.reference().child('data').limitToFirst(5);
   var allVisitorsRef = FirebaseDatabase.instance.reference().child('data');
+
+  void updateFormData(formIndex, formData) {
+    if (formIndex == 0) {
+      setState(() {
+        formName = formData;
+      });
+    } else if (formIndex == 1) {
+      setState(() {
+        formCompany = formData;
+      });
+    } else if (formIndex == 2) {
+      setState(() {
+        formDate = formData;
+      });
+    } else if (formIndex == 3) {
+      setState(() {
+        formICNo = formData;
+      });
+    }
+  }
+
+  void submitFormData(context) {
+    String newRecord = createRecord();
+    databaseReference.child('data').once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        for (int o = 0; o <= snapshot.value.length - 1; o++) {
+          if (newRecord == snapshot.value[o]['visitid'].toString()) {
+            submitFormData(context);
+          }
+          if (o == snapshot.value.length - 1) {
+            if (snapshot.value.length == 0) {
+              var newRecordRef =
+              FirebaseDatabase.instance.reference().child('data/0');
+              newRecordRef.update({
+                'company': formCompany,
+                'date': formDate,
+                'icno': formICNo,
+                'level': 3,
+                'name': formName,
+                'visitid': newRecord
+              }).then((Future) {
+                Navigator.pop(context);
+              });
+            } else {
+              var newRecordRef = FirebaseDatabase.instance
+                  .reference()
+                  .child('data/' + snapshot.value.length.toString());
+              newRecordRef.set({
+                'company': formCompany,
+                'date': formDate,
+                'icno': formICNo,
+                'level': 3,
+                'name': formName,
+                'visitid': newRecord
+              }).then((Future) {
+                Navigator.pop(context);
+              });
+            }
+          }
+        }
+      } else {
+        var newRecordRef =
+        FirebaseDatabase.instance.reference().child('data/0');
+        newRecordRef.update({
+          'company': formCompany,
+          'date': formDate,
+          'icno': formICNo,
+          'level': 3,
+          'name': formName,
+          'visitid': newRecord
+        }).then((Future) {
+          Navigator.pop(context);
+        });
+      }
+    });
+  }
 
   void launchBottomSheet() {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
-        builder: (BuildContext context) => Container(
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            child: Container(
               height: 600,
               color: Color(0xFF000000),
               child: new Container(
@@ -104,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(left: 30, top: 60),
+                            margin: EdgeInsets.only(left: 30, top: 30),
                             child: Text('Visitor Registration',
                                 style: TextStyle(
                                     fontSize: 20,
@@ -116,6 +190,9 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         margin: EdgeInsets.only(left: 40, top: 35, right: 40),
                         child: TextField(
+                          onChanged: (inputtext) {
+                            updateFormData(0, inputtext);
+                          },
                           decoration: InputDecoration(
                               labelText: "Visitor\'s Name",
                               fillColor: Colors.white,
@@ -126,8 +203,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, top: 25, right: 40),
+                        margin: EdgeInsets.only(left: 40, top: 20, right: 40),
                         child: TextField(
+                          onChanged: (inputtext) {
+                            updateFormData(1, inputtext);
+                          },
                           decoration: InputDecoration(
                               labelText: 'Visitor\'s Company',
                               fillColor: Colors.white,
@@ -138,8 +218,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, top: 25, right: 40),
+                        margin: EdgeInsets.only(left: 40, top: 20, right: 40),
                         child: TextField(
+                          onChanged: (inputtext) {
+                            updateFormData(2, inputtext);
+                          },
                           decoration: InputDecoration(
                               labelText: 'Visiting Date',
                               fillColor: Colors.white,
@@ -150,8 +233,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 40, top: 25, right: 40),
+                        margin: EdgeInsets.only(left: 40, top: 20, right: 40),
                         child: TextField(
+                          onChanged: (inputtext) {
+                            updateFormData(3, inputtext);
+                          },
                           decoration: InputDecoration(
                               labelText: 'Visitor\'s IC Number',
                               fillColor: Colors.white,
@@ -170,7 +256,9 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(10.0))),
                             child: new RaisedButton.icon(
-                              onPressed: null,
+                              onPressed: () {
+                                submitFormData(context);
+                              },
                               icon: Icon(Icons.add),
                               label: Text("Register"),
                               color: Colors.indigo,
@@ -179,7 +267,11 @@ class _HomePageState extends State<HomePage> {
                           )),
                     ],
                   )),
-            ));
+            ),
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+          );
+        });
   }
 
   @override
@@ -464,7 +556,7 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
           child: Hero(
         tag: 'visitorCard' + widget.cardCount.toString(),
         child: Container(
-            height: 480,
+            height: 540,
             width: 300,
             margin: EdgeInsets.only(right: 10),
             decoration: BoxDecoration(
@@ -606,8 +698,34 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                               codeType: BarCodeType.Code39,
                               lineWidth: 1.75,
                               barHeight: 80.0,
+                              hasText: true,
+                              foregroundColor: Colors.white,
                             )),
                         padding: EdgeInsets.only(top: 10),
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        child: ButtonTheme(
+                          height: 50,
+                          minWidth: 150,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0))),
+                          child: new RaisedButton.icon(
+                            onPressed: () {
+                              deleteRecord(widget.cardCount,context);
+                            },
+                            icon: Icon(Icons.delete),
+                            label: Text("Delete"),
+                            color: Colors.red,
+                            textColor: Color.fromRGBO(255, 255, 255, 0.9),
+                          ),
+                        ),
+                        padding: EdgeInsets.only(top: 30),
                       )
                     ],
                   ),
@@ -644,137 +762,155 @@ class _AllVisitorScreenState extends State<AllVisitorScreen> {
           StreamBuilder(
             stream: widget.dbref.onValue,
             builder: (context, snap) {
-              return snap.data.snapshot.value == null
-                  ? SizedBox(
-                      height: 520,
-                    )
-                  : Container(
-                      height: 520,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: snap.data.snapshot.value.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                              onLongPress: () {
-                                Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (c, a1, a2) =>
-                                          VisitorOverviewScreen(
-                                              cardCount: index,
-                                              dbdata: snap.data.snapshot.value),
-                                      transitionDuration:
-                                          Duration(milliseconds: 400),
-                                    ));
-                              },
-                              child: Hero(
-                                tag: 'visitorCard' + index.toString(),
-                                child: Container(
-                                    height: 200,
-                                    width: 300,
-                                    margin: EdgeInsets.only(
-                                        left: 20, right: 20, bottom: 10),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topRight,
-                                        end: Alignment.bottomLeft,
-                                        colors: [
-                                          Colors.indigo[800],
-                                          Colors.indigo[400],
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0)),
+              if (snap.hasData &&
+                  !snap.hasError &&
+                  snap.data.snapshot.value != null) {
+                return Container(
+                    height: 520,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: snap.data.snapshot.value.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder: (c, a1, a2) =>
+                                        VisitorOverviewScreen(
+                                            cardCount: index,
+                                            dbdata: snap.data.snapshot.value),
+                                    transitionDuration:
+                                        Duration(milliseconds: 400),
+                                  ));
+                            },
+                            child: Hero(
+                              tag: 'visitorCard' + index.toString(),
+                              child: Container(
+                                  height: 200,
+                                  width: 300,
+                                  margin: EdgeInsets.only(
+                                      left: 20, right: 20, bottom: 10),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      colors: [
+                                        Colors.indigo[800],
+                                        Colors.indigo[400],
+                                      ],
                                     ),
-                                    child: Container(
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Container(
-                                                  padding: EdgeInsets.only(
-                                                      top: 25, left: 30),
-                                                  child: new Material(
-                                                    color: Colors.transparent,
-                                                    child: Text('Visiting Date',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Color.fromRGBO(
-                                                                    255,
-                                                                    255,
-                                                                    255,
-                                                                    0.8))),
-                                                  ))
-                                            ],
-                                          ),
-                                          Row(
-                                            children: <Widget>[
-                                              Container(
-                                                child: new Material(
-                                                  color: Colors.transparent,
-                                                  child: Text(
-                                                      snap.data.snapshot
-                                                          .value[index]['date'],
-                                                      style: TextStyle(
-                                                          fontSize: 25)),
-                                                ),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                  ),
+                                  child: Container(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Row(
+                                          children: <Widget>[
+                                            Container(
                                                 padding: EdgeInsets.only(
-                                                    top: 5, left: 30),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: <Widget>[
-                                              Container(
+                                                    top: 25, left: 30),
                                                 child: new Material(
                                                   color: Colors.transparent,
-                                                  child: Text('Visitor Name',
+                                                  child: Text('Visiting Date',
                                                       style: TextStyle(
                                                           color: Color.fromRGBO(
                                                               255,
                                                               255,
                                                               255,
                                                               0.8))),
-                                                ),
-                                                padding: EdgeInsets.only(
-                                                    top: 18, left: 30),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: <Widget>[
-                                              Container(
-                                                child: new Material(
-                                                  color: Colors.transparent,
-                                                  child: Text(
-                                                      snap.data.snapshot
-                                                          .value[index]['name'],
-                                                      style: TextStyle(
-                                                          fontSize: 25)),
-                                                ),
-                                                padding: EdgeInsets.only(
-                                                    top: 5, left: 30),
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              ));
-                        },
-                      ));
+                                                ))
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Container(
+                                              child: new Material(
+                                                color: Colors.transparent,
+                                                child: Text(
+                                                    snap.data.snapshot
+                                                        .value[index]['date'],
+                                                    style: TextStyle(
+                                                        fontSize: 25)),
+                                              ),
+                                              padding: EdgeInsets.only(
+                                                  top: 5, left: 30),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Container(
+                                              child: new Material(
+                                                color: Colors.transparent,
+                                                child: Text('Visitor Name',
+                                                    style: TextStyle(
+                                                        color: Color.fromRGBO(
+                                                            255,
+                                                            255,
+                                                            255,
+                                                            0.8))),
+                                              ),
+                                              padding: EdgeInsets.only(
+                                                  top: 18, left: 30),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            Container(
+                                              child: new Material(
+                                                color: Colors.transparent,
+                                                child: Text(
+                                                    snap.data.snapshot
+                                                        .value[index]['name'],
+                                                    style: TextStyle(
+                                                        fontSize: 25)),
+                                              ),
+                                              padding: EdgeInsets.only(
+                                                  top: 5, left: 30),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ));
+                      },
+                    ));
+              } else {
+                return Container(
+                  height: 520,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              }
             },
           ),
         ]));
   }
 }
 
-void createRecord() {
+String createRecord() {
   var rng = new Random();
   var rngnum = "";
   for (var i = 0; i < 8; i++) {
     rngnum += rng.nextInt(10).toString();
   }
-  print(rngnum);
+  return rngnum;
+}
+
+void deleteRecord(recordindex,context) {
+  print(recordindex);
+  databaseReference.child('data').once().then((DataSnapshot snapshot) {
+    var synclist = new List<dynamic>.from(snapshot.value);
+    synclist.removeAt(recordindex);
+    var newRecordRef = FirebaseDatabase.instance.reference().child('data/');
+    newRecordRef.set(synclist).then((Future) {
+      Navigator.pop(context);
+    });
+  });
 }
