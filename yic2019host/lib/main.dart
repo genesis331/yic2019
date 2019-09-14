@@ -31,7 +31,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-    databaseReference.child('/').once().then((DataSnapshot snapshot) {
+    databaseReference.once().then((DataSnapshot snapshot) {
       Navigator.of(context).pushReplacement(PageRouteBuilder(
           pageBuilder: (c, a1, a2) => HomePage(),
           transitionsBuilder: (c, anim, a2, child) =>
