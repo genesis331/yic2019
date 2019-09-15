@@ -12,7 +12,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   firebase_core:
   firebase_database:
-  barcode_flutter: ^1.0.1
+  barcode_flutter:
+  intl:
 
 dev_dependencies:
   flutter_test:
