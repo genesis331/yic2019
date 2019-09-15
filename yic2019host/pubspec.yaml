@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
-  firebase_core:
+  firebase_core: 0.4.0+9
   firebase_database:
   barcode_flutter:
   intl:
