@@ -1,14 +1,25 @@
 # yic2019host
 
-Made using Flutter. An Android Application that will be using in YIC 2019 Malaysia.
+A Flutter project for competition.
+
+## Prerequisites
+
+1) An IDE (Android Studio is recommended)
+2) Flutter SDK
+3) Dart SDK
+4) Android Debug Bridge(ADB) SDK
+5) Google Firebase Service Profile JSON
+6) An Android phone or emulator
 
 ## Getting Started
 
-This app connects to Google Firebase Realtime Database, it requires the services profile from owner. Kindly request the JSON file from project owner.
+This project connects to the Google Firebase, it requires a services profile generated from your Firebase project settings.
 
-1) Launch Android Studio and open this repository.
-2) Press the Run Button.
+1) Clone the repository to your PC.
+2) Paste your Service Profile JSON in ./android/app/ folder.
+3) Launch your favourite IDE and open up this repository.
+4) Build and run the app on your phone.
 
 ## Contributing
 
-This project does not support contributions, yet.
+This project currently does not support contributions, yet.
