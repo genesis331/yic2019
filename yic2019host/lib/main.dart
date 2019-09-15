@@ -97,7 +97,6 @@ class _HomePageState extends State<HomePage> {
     } else if (formIndex == 2) {
       setState(() {
         formDate = formData;
-        print(formData);
       });
     } else if (formIndex == 3) {
       setState(() {
@@ -312,19 +311,21 @@ class _HomePageState extends State<HomePage> {
                                           );
                                         }).then((inputtime) {
                                       setState(() {
+                                        var tempHour;
+                                        var tempMinute;
                                         if (inputtime.hour < 10) {
-                                          updateFormData(
-                                              5,
-                                              inputtime.hour.toString() +
-                                                  ":0" +
-                                                  inputtime.minute.toString());
+                                          tempHour = '0' + inputtime.hour.toString();
                                         } else {
-                                          updateFormData(
-                                              5,
-                                              inputtime.hour.toString() +
-                                                  ":" +
-                                                  inputtime.minute.toString());
+                                          tempHour = inputtime.hour.toString();
                                         }
+                                        if (inputtime.minute < 10) {
+                                          tempMinute = '0' + inputtime.minute.toString();
+                                        } else {
+                                          tempMinute = inputtime.minute.toString();
+                                        }
+                                        updateFormData(
+                                            5,
+                                            tempHour + ':' + tempMinute);
                                       });
                                     });
                                   },
