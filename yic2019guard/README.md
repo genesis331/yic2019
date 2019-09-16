@@ -1,16 +1,25 @@
-# yic2019guard
+# yic2019host
 
-A new Flutter application.
+A Flutter project for competition.
+
+## Prerequisites
+
+1) An IDE (Android Studio is recommended)
+2) Flutter SDK
+3) Dart SDK
+4) Android Debug Bridge(ADB) SDK
+5) Google Firebase Service Profile JSON
+6) An Android phone or emulator
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This project connects to the Google Firebase, it requires a services profile generated from your Firebase project settings.
 
-A few resources to get you started if this is your first Flutter project:
+1) Clone the repository to your PC.
+2) Paste your Service Profile JSON in ./android/app/ folder.
+3) Launch your favourite IDE and open up this repository.
+4) Build and run the app on your phone.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Contributing
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project currently does not support contributions, yet.
