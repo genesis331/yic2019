@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+final databaseReference = FirebaseDatabase.instance.reference();
 
 void main() => runApp(MyApp());
 
@@ -7,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme:
-      ThemeData(primarySwatch: Colors.indigo, fontFamily: 'Open Sans'),
+      ThemeData(primarySwatch: Colors.indigo, fontFamily: 'Open Sans',textTheme: TextTheme(body1: TextStyle(color: Colors.white))),
       home: LoadingScreen(),
     );
   }
@@ -19,24 +22,16 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-//  var upcomingVisitorsRef =
-//  FirebaseDatabase.instance.reference().child('data').limitToFirst(5);
-
   @override
   void initState() {
     super.initState();
-//    databaseReference.child('/data').once().then((DataSnapshot snapshot) {
-//      return snapshot.value != null
-//          ? Navigator.of(context).pushReplacement(PageRouteBuilder(
-//        pageBuilder: (c, a1, a2) => HomePage(),
-//        transitionsBuilder: (c, anim, a2, child) =>
-//            FadeTransition(opacity: anim, child: child),
-//        transitionDuration: Duration(milliseconds: 1500),
-//      ))
-//          : Scaffold.of(context).showSnackBar(SnackBar(
-//          content:
-//          Text('Please make sure you\'re connected to the Internet.')));
-//    });
+    databaseReference.once().then((DataSnapshot snapshot) {
+      Navigator.of(context).pushReplacement(PageRouteBuilder(
+          pageBuilder: (c, a1, a2) => HomeScreen(),
+          transitionsBuilder: (c, anim, a2, child) =>
+              FadeTransition(opacity: anim, child: child),
+          transitionDuration: Duration(milliseconds: 1000)));
+    });
   }
 
   @override
@@ -54,18 +49,35 @@ class _LoadingScreenState extends State<LoadingScreen> {
                             color: Colors.white,
                             fontSize: 38,
                             fontWeight: FontWeight.bold)),
-                    Text('for Clients',
+                    Text('for Guards',
                         style: TextStyle(color: Colors.white, fontSize: 22)),
-//                    Container(
-//                      padding: EdgeInsets.only(top: 50),
-//                      child: CircularProgressIndicator(),
-//                    )
+                    Container(
+                      padding: EdgeInsets.only(top: 50),
+                      child: CircularProgressIndicator(),
+                    )
                   ],
                 ),
               )
             ],
             mainAxisAlignment: MainAxisAlignment.spaceAround,
           )),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: Text('Hello World'),
+        )
     );
   }
 }

@@ -1,4 +1,4 @@
-package com.clhs.yic2019client;
+package com.clhs.yic2019guard;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
