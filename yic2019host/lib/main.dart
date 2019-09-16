@@ -37,7 +37,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
           pageBuilder: (c, a1, a2) => HomePage(),
           transitionsBuilder: (c, anim, a2, child) =>
               FadeTransition(opacity: anim, child: child),
-          transitionDuration: Duration(milliseconds: 1500)));
+          transitionDuration: Duration(milliseconds: 1000)));
     });
   }
 
@@ -314,18 +314,20 @@ class _HomePageState extends State<HomePage> {
                                         var tempHour;
                                         var tempMinute;
                                         if (inputtime.hour < 10) {
-                                          tempHour = '0' + inputtime.hour.toString();
+                                          tempHour =
+                                              '0' + inputtime.hour.toString();
                                         } else {
                                           tempHour = inputtime.hour.toString();
                                         }
                                         if (inputtime.minute < 10) {
-                                          tempMinute = '0' + inputtime.minute.toString();
+                                          tempMinute =
+                                              '0' + inputtime.minute.toString();
                                         } else {
-                                          tempMinute = inputtime.minute.toString();
+                                          tempMinute =
+                                              inputtime.minute.toString();
                                         }
                                         updateFormData(
-                                            5,
-                                            tempHour + ':' + tempMinute);
+                                            5, tempHour + ':' + tempMinute);
                                       });
                                     });
                                   },
@@ -485,9 +487,10 @@ class _HomePageState extends State<HomePage> {
                                         pageBuilder: (c, a1, a2) =>
                                             VisitorOverviewScreen(
                                                 cardCount: index,
-                                                dbdata: snap.data.snapshot.value),
+                                                dbdata:
+                                                    snap.data.snapshot.value),
                                         transitionDuration:
-                                        Duration(milliseconds: 400),
+                                            Duration(milliseconds: 400),
                                       ));
                                 },
                                 child: Hero(
@@ -518,14 +521,15 @@ class _HomePageState extends State<HomePage> {
                                                         top: 25, left: 30),
                                                     child: new Material(
                                                       color: Colors.transparent,
-                                                      child: Text('Visiting Date',
+                                                      child: Text(
+                                                          'Visiting Date',
                                                           style: TextStyle(
-                                                              color:
-                                                              Color.fromRGBO(
-                                                                  255,
-                                                                  255,
-                                                                  255,
-                                                                  0.8))),
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      255,
+                                                                      255,
+                                                                      255,
+                                                                      0.8))),
                                                     ))
                                               ],
                                             ),
@@ -536,7 +540,8 @@ class _HomePageState extends State<HomePage> {
                                                     color: Colors.transparent,
                                                     child: Text(
                                                         snap.data.snapshot
-                                                            .value[index]['date'],
+                                                                .value[index]
+                                                            ['date'],
                                                         style: TextStyle(
                                                             fontSize: 25)),
                                                   ),
@@ -552,11 +557,12 @@ class _HomePageState extends State<HomePage> {
                                                     color: Colors.transparent,
                                                     child: Text('Visitor Name',
                                                         style: TextStyle(
-                                                            color: Color.fromRGBO(
-                                                                255,
-                                                                255,
-                                                                255,
-                                                                0.8))),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    0.8))),
                                                   ),
                                                   padding: EdgeInsets.only(
                                                       top: 18,
@@ -572,7 +578,8 @@ class _HomePageState extends State<HomePage> {
                                                     color: Colors.transparent,
                                                     child: Text(
                                                         snap.data.snapshot
-                                                            .value[index]['name'],
+                                                                .value[index]
+                                                            ['name'],
                                                         style: TextStyle(
                                                             fontSize: 25)),
                                                   ),
@@ -588,13 +595,15 @@ class _HomePageState extends State<HomePage> {
                                                 Container(
                                                   child: new Material(
                                                     color: Colors.transparent,
-                                                    child: Text('Visitor Company',
+                                                    child: Text(
+                                                        'Visitor Company',
                                                         style: TextStyle(
-                                                            color: Color.fromRGBO(
-                                                                255,
-                                                                255,
-                                                                255,
-                                                                0.8))),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    0.8))),
                                                   ),
                                                   padding: EdgeInsets.only(
                                                       top: 18,
@@ -610,8 +619,8 @@ class _HomePageState extends State<HomePage> {
                                                     color: Colors.transparent,
                                                     child: Text(
                                                         snap.data.snapshot
-                                                            .value[index]
-                                                        ['company'],
+                                                                .value[index]
+                                                            ['company'],
                                                         style: TextStyle(
                                                             fontSize: 25)),
                                                   ),
@@ -628,19 +637,20 @@ class _HomePageState extends State<HomePage> {
                                                     child: Text(
                                                         'Long press card to do more',
                                                         style: TextStyle(
-                                                            color: Color.fromRGBO(
-                                                                255,
-                                                                255,
-                                                                255,
-                                                                0.8),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    0.8),
                                                             fontSize: 10)),
                                                   ),
                                                   padding:
-                                                  EdgeInsets.only(top: 50),
+                                                      EdgeInsets.only(top: 50),
                                                 )
                                               ],
                                               mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                             ),
                                           ],
                                         ),
@@ -655,9 +665,10 @@ class _HomePageState extends State<HomePage> {
                                         pageBuilder: (c, a1, a2) =>
                                             VisitorOverviewScreen(
                                                 cardCount: index,
-                                                dbdata: snap.data.snapshot.value),
+                                                dbdata:
+                                                    snap.data.snapshot.value),
                                         transitionDuration:
-                                        Duration(milliseconds: 400),
+                                            Duration(milliseconds: 400),
                                       ));
                                 },
                                 child: Hero(
@@ -688,14 +699,15 @@ class _HomePageState extends State<HomePage> {
                                                         top: 25, left: 30),
                                                     child: new Material(
                                                       color: Colors.transparent,
-                                                      child: Text('Visiting Date',
+                                                      child: Text(
+                                                          'Visiting Date',
                                                           style: TextStyle(
-                                                              color:
-                                                              Color.fromRGBO(
-                                                                  255,
-                                                                  255,
-                                                                  255,
-                                                                  0.8))),
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      255,
+                                                                      255,
+                                                                      255,
+                                                                      0.8))),
                                                     ))
                                               ],
                                             ),
@@ -706,7 +718,8 @@ class _HomePageState extends State<HomePage> {
                                                     color: Colors.transparent,
                                                     child: Text(
                                                         snap.data.snapshot
-                                                            .value[index]['date'],
+                                                                .value[index]
+                                                            ['date'],
                                                         style: TextStyle(
                                                             fontSize: 25)),
                                                   ),
@@ -722,11 +735,12 @@ class _HomePageState extends State<HomePage> {
                                                     color: Colors.transparent,
                                                     child: Text('Visitor Name',
                                                         style: TextStyle(
-                                                            color: Color.fromRGBO(
-                                                                255,
-                                                                255,
-                                                                255,
-                                                                0.8))),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    0.8))),
                                                   ),
                                                   padding: EdgeInsets.only(
                                                       top: 18,
@@ -742,7 +756,8 @@ class _HomePageState extends State<HomePage> {
                                                     color: Colors.transparent,
                                                     child: Text(
                                                         snap.data.snapshot
-                                                            .value[index]['name'],
+                                                                .value[index]
+                                                            ['name'],
                                                         style: TextStyle(
                                                             fontSize: 25)),
                                                   ),
@@ -758,13 +773,15 @@ class _HomePageState extends State<HomePage> {
                                                 Container(
                                                   child: new Material(
                                                     color: Colors.transparent,
-                                                    child: Text('Visitor Company',
+                                                    child: Text(
+                                                        'Visitor Company',
                                                         style: TextStyle(
-                                                            color: Color.fromRGBO(
-                                                                255,
-                                                                255,
-                                                                255,
-                                                                0.8))),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    0.8))),
                                                   ),
                                                   padding: EdgeInsets.only(
                                                       top: 18,
@@ -780,8 +797,8 @@ class _HomePageState extends State<HomePage> {
                                                     color: Colors.transparent,
                                                     child: Text(
                                                         snap.data.snapshot
-                                                            .value[index]
-                                                        ['company'],
+                                                                .value[index]
+                                                            ['company'],
                                                         style: TextStyle(
                                                             fontSize: 25)),
                                                   ),
@@ -798,19 +815,20 @@ class _HomePageState extends State<HomePage> {
                                                     child: Text(
                                                         'Long press card to do more',
                                                         style: TextStyle(
-                                                            color: Color.fromRGBO(
-                                                                255,
-                                                                255,
-                                                                255,
-                                                                0.8),
+                                                            color:
+                                                                Color.fromRGBO(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    0.8),
                                                             fontSize: 10)),
                                                   ),
                                                   padding:
-                                                  EdgeInsets.only(top: 50),
+                                                      EdgeInsets.only(top: 50),
                                                 )
                                               ],
                                               mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                             ),
                                           ],
                                         ),
@@ -901,479 +919,482 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     HapticFeedback.lightImpact();
-    if (dateTimeValidation(
-        widget.dbdata[widget.cardCount]['date'],
+    if (dateTimeValidation(widget.dbdata[widget.cardCount]['date'],
         widget.dbdata[widget.cardCount]['time'])) {
       return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
             child: Hero(
-              tag: 'visitorCard' + widget.cardCount.toString(),
-              child: Container(
-                  height: 600,
-                  width: 350,
-                  margin: EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Colors.indigo[800],
-                        Colors.indigo[400],
-                      ],
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
+          tag: 'visitorCard' + widget.cardCount.toString(),
+          child: Container(
+              height: 600,
+              width: 350,
+              margin: EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Colors.indigo[800],
+                    Colors.indigo[400],
+                  ],
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                padding: EdgeInsets.only(top: 25, left: 30),
-                                child: new Material(
-                                  color: Colors.transparent,
-                                  child: Text('Visiting Date',
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(255, 255, 255, 0.8))),
-                                ))
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(widget.dbdata[widget.cardCount]['date'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                padding: EdgeInsets.only(top: 18, left: 30),
-                                child: new Material(
-                                  color: Colors.transparent,
-                                  child: Text('Visiting Time',
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(255, 255, 255, 0.8))),
-                                ))
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(widget.dbdata[widget.cardCount]['time'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('Visitor Name',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(widget.dbdata[widget.cardCount]['name'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('Visitor Company',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                    widget.dbdata[widget.cardCount]['company'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('IC Number',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(widget.dbdata[widget.cardCount]['icno'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('Pass Level',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                    widget.dbdata[widget.cardCount]['level']
-                                        .toString(),
-                                    style: TextStyle(fontSize: 40)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('Visit ID',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                  color: Colors.transparent,
-                                  child: new BarCodeImage(
-                                    data: widget.dbdata[widget.cardCount]['visitid']
-                                        .toString(),
-                                    codeType: BarCodeType.Code39,
-                                    lineWidth: 1.75,
-                                    barHeight: 80.0,
-                                    hasText: true,
-                                    foregroundColor: Colors.white,
-                                  )),
-                              padding: EdgeInsets.only(top: 10),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              child: ButtonTheme(
-                                height: 50,
-                                minWidth: 150,
-                                shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                                child: new RaisedButton.icon(
-                                  onPressed: () {
-                                    deleteRecord(widget.cardCount, context);
-                                  },
-                                  icon: Icon(Icons.delete),
-                                  label: Text("Delete"),
-                                  color: Colors.red,
-                                  textColor: Color.fromRGBO(255, 255, 255, 0.9),
-                                ),
-                              ),
-                              padding: EdgeInsets.only(top: 25, bottom: 25),
-                            )
-                          ],
-                        ),
+                        Container(
+                            padding: EdgeInsets.only(top: 25, left: 30),
+                            child: new Material(
+                              color: Colors.transparent,
+                              child: Text('Visiting Date',
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromRGBO(255, 255, 255, 0.8))),
+                            ))
                       ],
                     ),
-                  )),
-            )),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(widget.dbdata[widget.cardCount]['date'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                            padding: EdgeInsets.only(top: 18, left: 30),
+                            child: new Material(
+                              color: Colors.transparent,
+                              child: Text('Visiting Time',
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromRGBO(255, 255, 255, 0.8))),
+                            ))
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(widget.dbdata[widget.cardCount]['time'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('Visitor Name',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(widget.dbdata[widget.cardCount]['name'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('Visitor Company',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(
+                                widget.dbdata[widget.cardCount]['company'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('IC Number',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(widget.dbdata[widget.cardCount]['icno'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('Pass Level',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(
+                                widget.dbdata[widget.cardCount]['level']
+                                    .toString(),
+                                style: TextStyle(fontSize: 40)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('Visit ID',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                              color: Colors.transparent,
+                              child: new BarCodeImage(
+                                data: widget.dbdata[widget.cardCount]['visitid']
+                                    .toString(),
+                                codeType: BarCodeType.Code39,
+                                lineWidth: 1.75,
+                                barHeight: 80.0,
+                                hasText: true,
+                                foregroundColor: Colors.white,
+                              )),
+                          padding: EdgeInsets.only(top: 10),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          child: ButtonTheme(
+                            height: 50,
+                            minWidth: 150,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                            child: new RaisedButton.icon(
+                              onPressed: () {
+                                deleteRecord(widget.cardCount, context);
+                              },
+                              icon: Icon(Icons.delete),
+                              label: Text("Delete"),
+                              color: Colors.red,
+                              textColor: Color.fromRGBO(255, 255, 255, 0.9),
+                            ),
+                          ),
+                          padding: EdgeInsets.only(top: 25, bottom: 25),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )),
+        )),
       );
     } else {
       return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
             child: Hero(
-              tag: 'visitorCard' + widget.cardCount.toString(),
-              child: Container(
-                  height: 600,
-                  width: 350,
-                  margin: EdgeInsets.only(right: 10),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Colors.red[800],
-                        Colors.red[400],
-                      ],
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
+          tag: 'visitorCard' + widget.cardCount.toString(),
+          child: Container(
+              height: 600,
+              width: 350,
+              margin: EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Colors.red[800],
+                    Colors.red[400],
+                  ],
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Row(
                       children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                padding: EdgeInsets.only(top: 25, left: 30),
-                                child: new Material(
-                                  color: Colors.transparent,
-                                  child: Text('Visiting Date',
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(255, 255, 255, 0.8))),
-                                ))
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(widget.dbdata[widget.cardCount]['date'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                padding: EdgeInsets.only(top: 18, left: 30),
-                                child: new Material(
-                                  color: Colors.transparent,
-                                  child: Text('Visiting Time',
-                                      style: TextStyle(
-                                          color: Color.fromRGBO(255, 255, 255, 0.8))),
-                                ))
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(widget.dbdata[widget.cardCount]['time'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('Visitor Name',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(widget.dbdata[widget.cardCount]['name'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('Visitor Company',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                    widget.dbdata[widget.cardCount]['company'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('IC Number',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(widget.dbdata[widget.cardCount]['icno'],
-                                    style: TextStyle(fontSize: 25)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('Pass Level',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                    widget.dbdata[widget.cardCount]['level']
-                                        .toString(),
-                                    style: TextStyle(fontSize: 40)),
-                              ),
-                              padding: EdgeInsets.only(top: 5, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                color: Colors.transparent,
-                                child: Text('Visit ID',
-                                    style: TextStyle(
-                                        color: Color.fromRGBO(255, 255, 255, 0.8))),
-                              ),
-                              padding: EdgeInsets.only(top: 18, left: 30),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              child: new Material(
-                                  color: Colors.transparent,
-                                  child: new BarCodeImage(
-                                    data: widget.dbdata[widget.cardCount]['visitid']
-                                        .toString(),
-                                    codeType: BarCodeType.Code39,
-                                    lineWidth: 1.75,
-                                    barHeight: 80.0,
-                                    hasText: true,
-                                    foregroundColor: Colors.white,
-                                  )),
-                              padding: EdgeInsets.only(top: 10),
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              child: ButtonTheme(
-                                height: 50,
-                                minWidth: 150,
-                                shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                                child: new RaisedButton.icon(
-                                  onPressed: () {
-                                    deleteRecord(widget.cardCount, context);
-                                  },
-                                  icon: Icon(Icons.delete),
-                                  label: Text("Delete"),
-                                  color: Colors.red,
-                                  textColor: Color.fromRGBO(255, 255, 255, 0.9),
-                                ),
-                              ),
-                              padding: EdgeInsets.only(top: 25, bottom: 25),
-                            )
-                          ],
-                        ),
+                        Container(
+                            padding: EdgeInsets.only(top: 25, left: 30),
+                            child: new Material(
+                              color: Colors.transparent,
+                              child: Text('Visiting Date',
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromRGBO(255, 255, 255, 0.8))),
+                            ))
                       ],
                     ),
-                  )),
-            )),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(widget.dbdata[widget.cardCount]['date'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                            padding: EdgeInsets.only(top: 18, left: 30),
+                            child: new Material(
+                              color: Colors.transparent,
+                              child: Text('Visiting Time',
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromRGBO(255, 255, 255, 0.8))),
+                            ))
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(widget.dbdata[widget.cardCount]['time'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('Visitor Name',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(widget.dbdata[widget.cardCount]['name'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('Visitor Company',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(
+                                widget.dbdata[widget.cardCount]['company'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('IC Number',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(widget.dbdata[widget.cardCount]['icno'],
+                                style: TextStyle(fontSize: 25)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('Pass Level',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text(
+                                widget.dbdata[widget.cardCount]['level']
+                                    .toString(),
+                                style: TextStyle(fontSize: 40)),
+                          ),
+                          padding: EdgeInsets.only(top: 5, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                            color: Colors.transparent,
+                            child: Text('Visit ID',
+                                style: TextStyle(
+                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
+                          ),
+                          padding: EdgeInsets.only(top: 18, left: 30),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          child: new Material(
+                              color: Colors.transparent,
+                              child: new BarCodeImage(
+                                data: widget.dbdata[widget.cardCount]['visitid']
+                                    .toString(),
+                                codeType: BarCodeType.Code39,
+                                lineWidth: 1.75,
+                                barHeight: 80.0,
+                                hasText: true,
+                                foregroundColor: Colors.white,
+                              )),
+                          padding: EdgeInsets.only(top: 10),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          child: ButtonTheme(
+                            height: 50,
+                            minWidth: 150,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                            child: new RaisedButton.icon(
+                              onPressed: () {
+                                deleteRecord(widget.cardCount, context);
+                              },
+                              icon: Icon(Icons.delete),
+                              label: Text("Delete"),
+                              color: Colors.red,
+                              textColor: Color.fromRGBO(255, 255, 255, 0.9),
+                            ),
+                          ),
+                          padding: EdgeInsets.only(top: 25, bottom: 25),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )),
+        )),
       );
     }
   }
@@ -1414,112 +1435,223 @@ class _AllVisitorScreenState extends State<AllVisitorScreen> {
                       scrollDirection: Axis.vertical,
                       itemCount: snap.data.snapshot.value.length,
                       itemBuilder: (context, index) {
-                        return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder: (c, a1, a2) =>
-                                        VisitorOverviewScreen(
-                                            cardCount: index,
-                                            dbdata: snap.data.snapshot.value),
-                                    transitionDuration:
-                                        Duration(milliseconds: 400),
-                                  ));
-                            },
-                            child: Hero(
-                              tag: 'visitorCard' + index.toString(),
-                              child: Container(
-                                  height: 200,
-                                  width: 300,
-                                  margin: EdgeInsets.only(
-                                      left: 20, right: 20, bottom: 10),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topRight,
-                                      end: Alignment.bottomLeft,
-                                      colors: [
-                                        Colors.indigo[800],
-                                        Colors.indigo[400],
-                                      ],
+                        if (dateTimeValidation(
+                            snap.data.snapshot.value[index]['date'],
+                            snap.data.snapshot.value[index]['time'])) {
+                          return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (c, a1, a2) =>
+                                          VisitorOverviewScreen(
+                                              cardCount: index,
+                                              dbdata: snap.data.snapshot.value),
+                                      transitionDuration:
+                                      Duration(milliseconds: 400),
+                                    ));
+                              },
+                              child: Hero(
+                                tag: 'visitorCard' + index.toString(),
+                                child: Container(
+                                    height: 200,
+                                    width: 300,
+                                    margin: EdgeInsets.only(
+                                        left: 20, right: 20, bottom: 10),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          Colors.indigo[800],
+                                          Colors.indigo[400],
+                                        ],
+                                      ),
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
                                     ),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10.0)),
-                                  ),
-                                  child: Container(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Container(
-                                                padding: EdgeInsets.only(
-                                                    top: 25, left: 30),
+                                    child: Container(
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                  padding: EdgeInsets.only(
+                                                      top: 25, left: 30),
+                                                  child: new Material(
+                                                    color: Colors.transparent,
+                                                    child: Text('Visiting Date',
+                                                        style: TextStyle(
+                                                            color: Color.fromRGBO(
+                                                                255,
+                                                                255,
+                                                                255,
+                                                                0.8))),
+                                                  ))
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
                                                 child: new Material(
                                                   color: Colors.transparent,
-                                                  child: Text('Visiting Date',
+                                                  child: Text(
+                                                      snap.data.snapshot
+                                                          .value[index]['date'],
+                                                      style: TextStyle(
+                                                          fontSize: 25)),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    top: 5, left: 30),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: new Material(
+                                                  color: Colors.transparent,
+                                                  child: Text('Visitor Name',
                                                       style: TextStyle(
                                                           color: Color.fromRGBO(
                                                               255,
                                                               255,
                                                               255,
                                                               0.8))),
-                                                ))
-                                          ],
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Container(
-                                              child: new Material(
-                                                color: Colors.transparent,
-                                                child: Text(
-                                                    snap.data.snapshot
-                                                        .value[index]['date'],
-                                                    style: TextStyle(
-                                                        fontSize: 25)),
-                                              ),
-                                              padding: EdgeInsets.only(
-                                                  top: 5, left: 30),
-                                            )
-                                          ],
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Container(
-                                              child: new Material(
-                                                color: Colors.transparent,
-                                                child: Text('Visitor Name',
-                                                    style: TextStyle(
-                                                        color: Color.fromRGBO(
-                                                            255,
-                                                            255,
-                                                            255,
-                                                            0.8))),
-                                              ),
-                                              padding: EdgeInsets.only(
-                                                  top: 18, left: 30),
-                                            )
-                                          ],
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Container(
-                                              child: new Material(
-                                                color: Colors.transparent,
-                                                child: Text(
-                                                    snap.data.snapshot
-                                                        .value[index]['name'],
-                                                    style: TextStyle(
-                                                        fontSize: 25)),
-                                              ),
-                                              padding: EdgeInsets.only(
-                                                  top: 5, left: 30),
-                                            )
-                                          ],
-                                        ),
-                                      ],
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    top: 18, left: 30),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: new Material(
+                                                  color: Colors.transparent,
+                                                  child: Text(
+                                                      snap.data.snapshot
+                                                          .value[index]['name'],
+                                                      style: TextStyle(
+                                                          fontSize: 25)),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    top: 5, left: 30),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ));
+                        } else {
+                          return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (c, a1, a2) =>
+                                          VisitorOverviewScreen(
+                                              cardCount: index,
+                                              dbdata: snap.data.snapshot.value),
+                                      transitionDuration:
+                                      Duration(milliseconds: 400),
+                                    ));
+                              },
+                              child: Hero(
+                                tag: 'visitorCard' + index.toString(),
+                                child: Container(
+                                    height: 200,
+                                    width: 300,
+                                    margin: EdgeInsets.only(
+                                        left: 20, right: 20, bottom: 10),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          Colors.red[800],
+                                          Colors.red[400],
+                                        ],
+                                      ),
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
                                     ),
-                                  )),
-                            ));
+                                    child: Container(
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                  padding: EdgeInsets.only(
+                                                      top: 25, left: 30),
+                                                  child: new Material(
+                                                    color: Colors.transparent,
+                                                    child: Text('Visiting Date',
+                                                        style: TextStyle(
+                                                            color: Color.fromRGBO(
+                                                                255,
+                                                                255,
+                                                                255,
+                                                                0.8))),
+                                                  ))
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: new Material(
+                                                  color: Colors.transparent,
+                                                  child: Text(
+                                                      snap.data.snapshot
+                                                          .value[index]['date'],
+                                                      style: TextStyle(
+                                                          fontSize: 25)),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    top: 5, left: 30),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: new Material(
+                                                  color: Colors.transparent,
+                                                  child: Text('Visitor Name',
+                                                      style: TextStyle(
+                                                          color: Color.fromRGBO(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              0.8))),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    top: 18, left: 30),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: <Widget>[
+                                              Container(
+                                                child: new Material(
+                                                  color: Colors.transparent,
+                                                  child: Text(
+                                                      snap.data.snapshot
+                                                          .value[index]['name'],
+                                                      style: TextStyle(
+                                                          fontSize: 25)),
+                                                ),
+                                                padding: EdgeInsets.only(
+                                                    top: 5, left: 30),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ));
+                        }
                       },
                     ));
               } else {
@@ -1558,8 +1690,8 @@ void deleteRecord(recordindex, context) {
 
 bool dateTimeValidation(inputdate, inputtime) {
   var now = new DateTime.now();
-  var testInput = inputdate + ' ' + inputtime +':00.000000';
-  if (DateTime.parse(testInput).difference(now).isNegative){
+  var testInput = inputdate + ' ' + inputtime + ':00.000000';
+  if (DateTime.parse(testInput).difference(now).isNegative) {
     return false;
   } else {
     return true;
