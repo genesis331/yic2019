@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:barcode_flutter/barcode_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -139,6 +138,7 @@ class _HomePageState extends State<HomePage> {
                   'name': formName,
                   'visitid': newRecord,
                   'time': formTime,
+                  'status' : 'UNKNOWN',
                 }).then((Future) {
                   Navigator.pop(context);
                 });
@@ -154,6 +154,7 @@ class _HomePageState extends State<HomePage> {
                   'name': formName,
                   'visitid': newRecord,
                   'time': formTime,
+                  'status' : 'UNKNOWN',
                 }).then((Future) {
                   Navigator.pop(context);
                 });
@@ -171,6 +172,7 @@ class _HomePageState extends State<HomePage> {
             'name': formName,
             'visitid': newRecord,
             'time': formTime,
+            'status' : 'UNKNOWN',
           }).then((Future) {
             Navigator.pop(context);
           });
@@ -1098,38 +1100,6 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                       ],
                     ),
                     Row(
-                      children: <Widget>[
-                        Container(
-                          child: new Material(
-                            color: Colors.transparent,
-                            child: Text('Visit ID',
-                                style: TextStyle(
-                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
-                          ),
-                          padding: EdgeInsets.only(top: 18, left: 30),
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          child: new Material(
-                              color: Colors.transparent,
-                              child: new BarCodeImage(
-                                data: widget.dbdata[widget.cardCount]['visitid']
-                                    .toString(),
-                                codeType: BarCodeType.Code39,
-                                lineWidth: 1.75,
-                                barHeight: 80.0,
-                                hasText: true,
-                                foregroundColor: Colors.white,
-                              )),
-                          padding: EdgeInsets.only(top: 10),
-                        )
-                      ],
-                    ),
-                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
@@ -1332,38 +1302,6 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                                 style: TextStyle(fontSize: 40)),
                           ),
                           padding: EdgeInsets.only(top: 5, left: 30),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          child: new Material(
-                            color: Colors.transparent,
-                            child: Text('Visit ID',
-                                style: TextStyle(
-                                    color: Color.fromRGBO(255, 255, 255, 0.8))),
-                          ),
-                          padding: EdgeInsets.only(top: 18, left: 30),
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          child: new Material(
-                              color: Colors.transparent,
-                              child: new BarCodeImage(
-                                data: widget.dbdata[widget.cardCount]['visitid']
-                                    .toString(),
-                                codeType: BarCodeType.Code39,
-                                lineWidth: 1.75,
-                                barHeight: 80.0,
-                                hasText: true,
-                                foregroundColor: Colors.white,
-                              )),
-                          padding: EdgeInsets.only(top: 10),
                         )
                       ],
                     ),
