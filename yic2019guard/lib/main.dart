@@ -163,14 +163,36 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: Colors.white,
                         ),
                       )),
+                  Container(
+                      margin: EdgeInsets.only(left: 10),
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        color: Colors.indigo,
+                      ),
+                      child: ButtonTheme(
+                        height: 50,
+                        shape: new RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10.0))),
+                        child: IconButton(
+                          icon: Icon(Icons.warning),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TicketsScreen()));
+                          },
+                          color: Colors.white,
+                        ),
+                      )),
                 ],
               ),
             ),
             StreamBuilder(
               stream: ticketsRef.onValue,
               builder: (context, snap) {
-                //TODO()
-                print(snap.data.snapshot.value.length);
                 if (snap.hasData &&
                     !snap.hasError &&
                     snap.data.snapshot.value != null) {
@@ -472,7 +494,7 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                                     BorderRadius.all(Radius.circular(10.0))),
                             child: new RaisedButton.icon(
                               onPressed: () {
-                                print('Test');
+                                deleteRecord(widget.cardCount, context);
                               },
                               icon: Icon(Icons.delete),
                               label: Text("Delete"),
@@ -670,7 +692,7 @@ class _VisitorOverviewScreenState extends State<VisitorOverviewScreen> {
                                     BorderRadius.all(Radius.circular(10.0))),
                             child: new RaisedButton.icon(
                               onPressed: () {
-                                print('Test');
+                                deleteRecord(widget.cardCount, context);
                               },
                               icon: Icon(Icons.delete),
                               label: Text("Delete"),
@@ -963,6 +985,24 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
+class TicketsScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.black,
+        body: Column(children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(20, 30, 0, 30),
+            child: AppBar(
+              backgroundColor: Colors.transparent,
+              title: Text('Tickets',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ]));
+  }
+}
+
 bool dateTimeValidation(inputdate, inputtime) {
   var now = new DateTime.now();
   var testInput = inputdate + ' ' + inputtime + ':00.000000';
@@ -971,4 +1011,15 @@ bool dateTimeValidation(inputdate, inputtime) {
   } else {
     return true;
   }
+}
+
+void deleteRecord(recordindex, context) {
+  databaseReference.child('data').once().then((DataSnapshot snapshot) {
+    var synclist = new List<dynamic>.from(snapshot.value);
+    synclist.removeAt(recordindex);
+    var newRecordRef = FirebaseDatabase.instance.reference().child('data/');
+    newRecordRef.set(synclist).then((Future) {
+      Navigator.pop(context);
+    });
+  });
 }
