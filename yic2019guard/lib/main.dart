@@ -220,9 +220,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             children: <Widget>[
                               Container(
-                                child: Text(snap.data.snapshot.value[
-                                        snap.data.snapshot.value.length - 1]
-                                    ['status'],style: TextStyle(fontWeight: FontWeight.bold)),
+                                child: Text(
+                                    snap.data.snapshot.value[
+                                            snap.data.snapshot.value.length - 1]
+                                        ['status'],
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               Container(
                                 child: Text(snap.data.snapshot.value[
@@ -1229,10 +1232,12 @@ class TicketsScreen extends StatelessWidget {
                           height: 50,
                           minWidth: 200,
                           shape: new RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0))),
                           child: new RaisedButton.icon(
                             onPressed: () {
-                              submitTickets(issueName,selectedArea,selectedPriority,context);
+                              submitTickets(issueName, selectedArea,
+                                  selectedPriority, context);
                             },
                             icon: Icon(Icons.send),
                             label: Text("Submit"),
@@ -1277,7 +1282,123 @@ class TicketsScreen extends StatelessWidget {
                 textColor: Colors.white,
               ),
             ),
-          )
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 30),
+            height: 450,
+            width: double.infinity,
+            child: StreamBuilder(
+              stream: ticketsRef.onValue,
+              builder: (context, snap) {
+                if (snap.hasData &&
+                    !snap.hasError &&
+                    snap.data.snapshot.value != null) {
+                  return ListView.builder(
+                      itemCount: snap.data.snapshot.value.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          height: 140,
+                          width: 300,
+                          margin:
+                          EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                Colors.indigo[800],
+                                Colors.indigo[400],
+                              ],
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.fromLTRB(20, 20, 15, 10),
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Text(
+                                          snap.data.snapshot.value[index]
+                                          ['status'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Container(
+                                      child: Text(snap.data.snapshot.value[index]
+                                      ['date']),
+                                      padding: EdgeInsets.only(left: 10),
+                                    ),
+                                    Container(
+                                      child: Text(snap.data.snapshot.value[index]
+                                      ['time']),
+                                      padding: EdgeInsets.only(left: 10),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(40, 0, 15, 10),
+                                width: double.infinity,
+                                child: SingleChildScrollView(
+                                  scrollDirection: prefix1.Axis.horizontal,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                            snap.data.snapshot.value[index]
+                                            ['issue'],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 28)),
+                                      ),
+                                      Container(
+                                        child: Text('at '),
+                                        padding: EdgeInsets.only(left: 10),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                            snap.data.snapshot.value[index]
+                                            ['area'],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                  padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text('Priority: '),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                            snap.data.snapshot
+                                                .value[index]['priority']
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ))
+                            ],
+                          ),
+                        );
+                      });
+                } else {
+                  return Container(
+                    height: 140,
+                    width: 300,
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+            ),
+          ),
         ]));
   }
 }
@@ -1312,29 +1433,30 @@ void submitTickets(issueName, issueArea, issuePriority, context) {
     databaseReference.child('ticket').once().then((DataSnapshot snapshot) {
       if (snapshot.value == null) {
         var newTicketRef =
-        FirebaseDatabase.instance.reference().child('ticket/0');
+            FirebaseDatabase.instance.reference().child('ticket/0');
         newTicketRef.update({
           'area': issueArea,
           'issue': issueName,
           'priority': issuePriority.toString(),
-          'date' : df.toString(),
-          'time' : tf,
-          'pic' : '',
-          'status' : 'ONGOING',
+          'date': df.toString(),
+          'time': tf,
+          'pic': '',
+          'status': 'ONGOING',
         }).then((future) {
           Navigator.pop(context);
         });
       } else {
-        var newTicketRef =
-        FirebaseDatabase.instance.reference().child('ticket/' + snapshot.value.length.toString());
+        var newTicketRef = FirebaseDatabase.instance
+            .reference()
+            .child('ticket/' + snapshot.value.length.toString());
         newTicketRef.update({
           'area': issueArea,
           'issue': issueName,
           'priority': issuePriority.toString(),
-          'date' : df.toString(),
-          'time' : tf,
-          'pic' : '',
-          'status' : 'ONGOING',
+          'date': df.toString(),
+          'time': tf,
+          'pic': '',
+          'status': 'ONGOING',
         }).then((future) {
           Navigator.pop(context);
         });
