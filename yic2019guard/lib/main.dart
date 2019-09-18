@@ -7,8 +7,10 @@ import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:localstorage/localstorage.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
+bool isAdmin = false;
 
 void main() => runApp(MyApp());
 
@@ -34,6 +36,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
+    checkAdminStatus();
     databaseReference.once().then((DataSnapshot snapshot) {
       Navigator.of(context).pushReplacement(PageRouteBuilder(
           pageBuilder: (c, a1, a2) => HomeScreen(),
@@ -76,10 +79,22 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
 var allVisitorsRef = FirebaseDatabase.instance.reference().child('data');
 var ticketsRef = FirebaseDatabase.instance.reference().child('ticket');
+var adminDataRef = FirebaseDatabase.instance.reference().child('admin_guard');
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
+}
+
+void checkAdminStatus() {
+  final LocalStorage storage = new LocalStorage('adminPassword');
+  databaseReference.child('admin_guard').once().then((DataSnapshot snapshot) {
+    if (snapshot.value == storage.getItem('adminPassword')) {
+      isAdmin = true;
+    } else {
+      isAdmin = false;
+    }
+  });
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -195,107 +210,129 @@ class _HomeScreenState extends State<HomeScreen> {
             StreamBuilder(
               stream: ticketsRef.onValue,
               builder: (context, snap) {
+                int index1 = snap.data.snapshot.value.length - 1;
                 if (snap.hasData &&
                     !snap.hasError &&
                     snap.data.snapshot.value != null) {
-                  return Container(
-                    margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-                    height: 140,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          Colors.indigo[800],
-                          Colors.indigo[400],
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.fromLTRB(20, 20, 15, 10),
-                          child: Row(
+                  return GestureDetector(
+                    onLongPress: () {
+                      HapticFeedback.lightImpact();
+                      Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (c, a1, a2) => TicketOverviewScreen(
+                                ticketIndex:
+                                    snap.data.snapshot.value.length - 1,
+                                ticketData: snap.data.snapshot.value),
+                            transitionDuration: Duration(milliseconds: 400),
+                          ));
+                    },
+                    child: Hero(
+                      tag: 'ticketcard' + index1.toString(),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+                          height: 140,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                Colors.indigo[800],
+                                Colors.indigo[400],
+                              ],
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          child: Column(
                             children: <Widget>[
                               Container(
-                                child: Text(
-                                    snap.data.snapshot.value[
-                                            snap.data.snapshot.value.length - 1]
-                                        ['status'],
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
+                                padding: EdgeInsets.fromLTRB(20, 20, 15, 10),
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(
+                                      child: Text(
+                                          snap.data.snapshot.value[
+                                              snap.data.snapshot.value.length -
+                                                  1]['status'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                    ),
+                                    Container(
+                                      child: Text(snap.data.snapshot.value[
+                                          snap.data.snapshot.value.length -
+                                              1]['date']),
+                                      padding: EdgeInsets.only(left: 10),
+                                    ),
+                                    Container(
+                                      child: Text(snap.data.snapshot.value[
+                                          snap.data.snapshot.value.length -
+                                              1]['time']),
+                                      padding: EdgeInsets.only(left: 10),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Container(
-                                child: Text(snap.data.snapshot.value[
-                                        snap.data.snapshot.value.length - 1]
-                                    ['date']),
-                                padding: EdgeInsets.only(left: 10),
+                                padding: EdgeInsets.fromLTRB(40, 0, 15, 10),
+                                width: double.infinity,
+                                child: SingleChildScrollView(
+                                  scrollDirection: prefix1.Axis.horizontal,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text(
+                                            snap.data.snapshot.value[snap.data
+                                                    .snapshot.value.length -
+                                                1]['issue'],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 28)),
+                                      ),
+                                      Container(
+                                        child: Text('at '),
+                                        padding: EdgeInsets.only(left: 10),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                            snap.data.snapshot.value[snap.data
+                                                    .snapshot.value.length -
+                                                1]['area'],
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                               Container(
-                                child: Text(snap.data.snapshot.value[
-                                        snap.data.snapshot.value.length - 1]
-                                    ['time']),
-                                padding: EdgeInsets.only(left: 10),
-                              ),
+                                  padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Container(
+                                        child: Text('Priority: '),
+                                      ),
+                                      Container(
+                                        child: Text(
+                                            snap
+                                                .data
+                                                .snapshot
+                                                .value[snap.data.snapshot.value
+                                                        .length -
+                                                    1]['priority']
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                    ],
+                                  ))
                             ],
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(40, 0, 15, 10),
-                          width: double.infinity,
-                          child: SingleChildScrollView(
-                            scrollDirection: prefix1.Axis.horizontal,
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  child: Text(
-                                      snap.data.snapshot.value[
-                                          snap.data.snapshot.value.length -
-                                              1]['issue'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 28)),
-                                ),
-                                Container(
-                                  child: Text('at '),
-                                  padding: EdgeInsets.only(left: 10),
-                                ),
-                                Container(
-                                  child: Text(
-                                      snap.data.snapshot.value[
-                                          snap.data.snapshot.value.length -
-                                              1]['area'],
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                            padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  child: Text('Priority: '),
-                                ),
-                                Container(
-                                  child: Text(
-                                      snap
-                                          .data
-                                          .snapshot
-                                          .value[
-                                              snap.data.snapshot.value.length -
-                                                  1]['priority']
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                ),
-                              ],
-                            ))
-                      ],
+                      ),
                     ),
                   );
                 } else {
@@ -992,6 +1029,7 @@ class _AllVisitorScreenState extends State<AllVisitorScreen> {
 }
 
 class SettingsScreen extends StatelessWidget {
+  final LocalStorage storage = new LocalStorage('adminPassword');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1005,6 +1043,50 @@ class SettingsScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
             ),
           ),
+          SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              padding: EdgeInsets.fromLTRB(0, 20, 0, 30),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Colors.indigo[800],
+                    Colors.indigo[400],
+                  ],
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              ),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      padding: EdgeInsets.fromLTRB(30, 0, 30, 10),
+                      child: Row(
+                        children: <Widget>[
+                          Text('Admin Password: '),
+                        ],
+                      )),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(30, 0, 30, 10),
+                    child: TextField(
+                      autofocus: true,
+                      controller: TextEditingController()
+                        ..text = storage.getItem('adminPassword'),
+                      onChanged: (inputtext) {
+                        storage.setItem('adminPassword', inputtext);
+                      },
+                      decoration: InputDecoration(
+                          border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(5.0),
+                        borderSide: new BorderSide(),
+                      )),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
         ]));
   }
 }
@@ -1267,21 +1349,30 @@ class TicketsScreen extends StatelessWidget {
             ),
           ),
           Container(
-            child: ButtonTheme(
-              height: 50,
-              minWidth: 250,
-              shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              child: new RaisedButton.icon(
-                onPressed: () {
-                  addTicketScreen(context);
-                },
-                icon: Icon(Icons.add),
-                label: Text("Add Ticket"),
-                color: Colors.indigo,
-                textColor: Colors.white,
-              ),
-            ),
+            child: StreamBuilder(builder: (context, snapshot) {
+              checkAdminStatus();
+              if (isAdmin == true) {
+                return ButtonTheme(
+                  height: 50,
+                  minWidth: 250,
+                  shape: new RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  child: new RaisedButton.icon(
+                    onPressed: () {
+                      addTicketScreen(context);
+                    },
+                    icon: Icon(Icons.add),
+                    label: Text("Add Ticket"),
+                    color: Colors.indigo,
+                    textColor: Colors.white,
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: EdgeInsets.only(top: 0),
+                );
+              }
+            }),
           ),
           Container(
             margin: EdgeInsets.only(top: 30),
@@ -1296,96 +1387,127 @@ class TicketsScreen extends StatelessWidget {
                   return ListView.builder(
                       itemCount: snap.data.snapshot.value.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          height: 140,
-                          width: 300,
-                          margin:
-                          EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                Colors.indigo[800],
-                                Colors.indigo[400],
-                              ],
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.fromLTRB(20, 20, 15, 10),
-                                child: Row(
+                        return GestureDetector(
+                          onLongPress: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (c, a1, a2) =>
+                                      TicketOverviewScreen(
+                                          ticketIndex: index,
+                                          ticketData: snap.data.snapshot.value),
+                                  transitionDuration:
+                                      Duration(milliseconds: 400),
+                                ));
+                          },
+                          child: Hero(
+                            tag: 'ticketcard' + index.toString(),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: Container(
+                                height: 140,
+                                width: 300,
+                                margin: EdgeInsets.only(
+                                    left: 20, right: 20, bottom: 10),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topRight,
+                                    end: Alignment.bottomLeft,
+                                    colors: [
+                                      Colors.indigo[800],
+                                      Colors.indigo[400],
+                                    ],
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
+                                ),
+                                child: Column(
                                   children: <Widget>[
                                     Container(
-                                      child: Text(
-                                          snap.data.snapshot.value[index]
-                                          ['status'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold)),
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 20, 15, 10),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Container(
+                                            child: Text(
+                                                snap.data.snapshot.value[index]
+                                                    ['status'],
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                          ),
+                                          Container(
+                                            child: Text(snap.data.snapshot
+                                                .value[index]['date']),
+                                            padding: EdgeInsets.only(left: 10),
+                                          ),
+                                          Container(
+                                            child: Text(snap.data.snapshot
+                                                .value[index]['time']),
+                                            padding: EdgeInsets.only(left: 10),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Container(
-                                      child: Text(snap.data.snapshot.value[index]
-                                      ['date']),
-                                      padding: EdgeInsets.only(left: 10),
+                                      padding:
+                                          EdgeInsets.fromLTRB(40, 0, 15, 10),
+                                      width: double.infinity,
+                                      child: SingleChildScrollView(
+                                        scrollDirection:
+                                            prefix1.Axis.horizontal,
+                                        child: Row(
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text(
+                                                  snap.data.snapshot
+                                                      .value[index]['issue'],
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 28)),
+                                            ),
+                                            Container(
+                                              child: Text('at '),
+                                              padding:
+                                                  EdgeInsets.only(left: 10),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                  snap.data.snapshot
+                                                      .value[index]['area'],
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
                                     Container(
-                                      child: Text(snap.data.snapshot.value[index]
-                                      ['time']),
-                                      padding: EdgeInsets.only(left: 10),
-                                    ),
+                                        padding:
+                                            EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                        child: Row(
+                                          children: <Widget>[
+                                            Container(
+                                              child: Text('Priority: '),
+                                            ),
+                                            Container(
+                                              child: Text(
+                                                  snap.data.snapshot
+                                                      .value[index]['priority']
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ),
+                                          ],
+                                        ))
                                   ],
                                 ),
                               ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(40, 0, 15, 10),
-                                width: double.infinity,
-                                child: SingleChildScrollView(
-                                  scrollDirection: prefix1.Axis.horizontal,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text(
-                                            snap.data.snapshot.value[index]
-                                            ['issue'],
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 28)),
-                                      ),
-                                      Container(
-                                        child: Text('at '),
-                                        padding: EdgeInsets.only(left: 10),
-                                      ),
-                                      Container(
-                                        child: Text(
-                                            snap.data.snapshot.value[index]
-                                            ['area'],
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                  padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text('Priority: '),
-                                      ),
-                                      Container(
-                                        child: Text(
-                                            snap.data.snapshot
-                                                .value[index]['priority']
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      ),
-                                    ],
-                                  ))
-                            ],
+                            ),
                           ),
                         );
                       });
@@ -1400,6 +1522,169 @@ class TicketsScreen extends StatelessWidget {
             ),
           ),
         ]));
+  }
+}
+
+class TicketOverviewScreen extends StatefulWidget {
+  final int ticketIndex;
+  final dynamic ticketData;
+  TicketOverviewScreen({Key key, this.ticketIndex, this.ticketData})
+      : super(key: key);
+  @override
+  _TicketOverviewScreenState createState() => _TicketOverviewScreenState();
+}
+
+class _TicketOverviewScreenState extends State<TicketOverviewScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: Hero(
+            tag: 'ticketcard' + widget.ticketIndex.toString(),
+            child: SingleChildScrollView(
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Colors.indigo[800],
+                        Colors.indigo[400],
+                      ],
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.fromLTRB(20, 20, 15, 10),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              child: Text(
+                                  widget.ticketData[widget.ticketIndex]
+                                      ['status'],
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            Container(
+                              child: Text(widget.ticketData[widget.ticketIndex]
+                                  ['date']),
+                              padding: EdgeInsets.only(left: 10),
+                            ),
+                            Container(
+                              child: Text(widget.ticketData[widget.ticketIndex]
+                                  ['time']),
+                              padding: EdgeInsets.only(left: 10),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(40, 0, 15, 10),
+                        width: double.infinity,
+                        child: SingleChildScrollView(
+                          scrollDirection: prefix1.Axis.horizontal,
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                    widget.ticketData[widget.ticketIndex]
+                                        ['issue'],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 28)),
+                              ),
+                              Container(
+                                child: Text('at '),
+                                padding: EdgeInsets.only(left: 10),
+                              ),
+                              Container(
+                                child: Text(
+                                    widget.ticketData[widget.ticketIndex]
+                                        ['area'],
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                          padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                child: Text('Priority: '),
+                              ),
+                              Container(
+                                child: Text(
+                                    widget.ticketData[widget.ticketIndex]
+                                            ['priority']
+                                        .toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          )),
+                      Container(
+                        padding: EdgeInsets.fromLTRB(0, 30, 0, 25),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            StreamBuilder(builder: (context, snap) {
+                              checkAdminStatus();
+                              if (isAdmin == true) {
+                                return ButtonTheme(
+                                  height: 50,
+                                  minWidth: 150,
+                                  shape: new RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  child: new RaisedButton.icon(
+                                    onPressed: () {
+                                      //TODO()
+                                    },
+                                    icon: Icon(Icons.delete),
+                                    label: Text("Delete"),
+                                    color: Colors.red,
+                                    textColor: Colors.white,
+                                  ),
+                                );
+                              } else {
+                                return ButtonTheme(
+                                  height: 50,
+                                  minWidth: 150,
+                                  shape: new RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  child: new RaisedButton.icon(
+                                    onPressed: () {
+                                      //TODO()
+                                    },
+                                    icon: Icon(Icons.delete),
+                                    label: Text("Resolve"),
+                                    color: Colors.green,
+                                    textColor: Colors.white,
+                                  ),
+                                );
+                              }
+                            })
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ));
   }
 }
 
