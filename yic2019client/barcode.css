@@ -1,0 +1,12 @@
+body{
+    background-image: url("background.png");
+    background-size: cover;
+}
+p{
+    text-align: center;
+    font-size: 36px
+}
+div style{
+    text-align: center;
+         
+}
