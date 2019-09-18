@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' as prefix1;
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:charts_flutter/flutter.dart';
@@ -71,6 +73,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 }
 
 var allVisitorsRef = FirebaseDatabase.instance.reference().child('data');
+var ticketsRef = FirebaseDatabase.instance.reference().child('ticket');
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -163,22 +166,112 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-              height: 140,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Colors.indigo[800],
-                    Colors.indigo[400],
-                  ],
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-              ),
-            )
+            StreamBuilder(
+              stream: ticketsRef.onValue,
+              builder: (context, snap) {
+                //TODO()
+                print(snap.data.snapshot.value.length);
+                if (snap.hasData &&
+                    !snap.hasError &&
+                    snap.data.snapshot.value != null) {
+                  return Container(
+                    margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+                    height: 140,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Colors.indigo[800],
+                          Colors.indigo[400],
+                        ],
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.fromLTRB(20, 20, 15, 10),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['status']),
+                              ),
+                              Container(
+                                child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['date']),
+                                padding: EdgeInsets.only(left: 10),
+                              ),
+                              Container(
+                                child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['time']),
+                                padding: EdgeInsets.only(left: 10),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(40, 0, 15, 10),
+                          width: double.infinity,
+                          child: SingleChildScrollView(
+                            scrollDirection: prefix1.Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['issue'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 28)),
+                                ),
+                                Container(
+                                  child: Text('at '),
+                                  padding: EdgeInsets.only(left: 10),
+                                ),
+                                Container(
+                                  child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['area'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                            padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  child: Text('Priority: '),
+                                ),
+                                Container(
+                                  child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['priority'].toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ))
+                      ],
+                    ),
+                  );
+                } else {
+                  return Container(
+                    margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+                    height: 140,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Colors.indigo[800],
+                          Colors.indigo[400],
+                        ],
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                  );
+                }
+              },
+            ),
           ],
         ));
   }
