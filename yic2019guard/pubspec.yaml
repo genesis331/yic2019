@@ -13,6 +13,7 @@ dependencies:
   firebase_database:
   firebase_core: 0.4.0+9
   charts_flutter: ^0.8.0
+  intl:
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart' as prefix1;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
 
@@ -105,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: EdgeInsets.only(top: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -175,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 50,
                         shape: new RoundedRectangleBorder(
                             borderRadius:
-                            BorderRadius.all(Radius.circular(10.0))),
+                                BorderRadius.all(Radius.circular(10.0))),
                         child: IconButton(
                           icon: Icon(Icons.warning),
                           onPressed: () {
@@ -218,14 +220,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             children: <Widget>[
                               Container(
-                                child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['status']),
+                                child: Text(snap.data.snapshot.value[
+                                        snap.data.snapshot.value.length - 1]
+                                    ['status'],style: TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               Container(
-                                child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['date']),
+                                child: Text(snap.data.snapshot.value[
+                                        snap.data.snapshot.value.length - 1]
+                                    ['date']),
                                 padding: EdgeInsets.only(left: 10),
                               ),
                               Container(
-                                child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['time']),
+                                child: Text(snap.data.snapshot.value[
+                                        snap.data.snapshot.value.length - 1]
+                                    ['time']),
                                 padding: EdgeInsets.only(left: 10),
                               ),
                             ],
@@ -239,7 +247,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Row(
                               children: <Widget>[
                                 Container(
-                                  child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['issue'],
+                                  child: Text(
+                                      snap.data.snapshot.value[
+                                          snap.data.snapshot.value.length -
+                                              1]['issue'],
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 28)),
@@ -249,7 +260,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: EdgeInsets.only(left: 10),
                                 ),
                                 Container(
-                                  child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['area'],
+                                  child: Text(
+                                      snap.data.snapshot.value[
+                                          snap.data.snapshot.value.length -
+                                              1]['area'],
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
                                 ),
@@ -265,7 +279,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Text('Priority: '),
                                 ),
                                 Container(
-                                  child: Text(snap.data.snapshot.value[snap.data.snapshot.value.length - 1]['priority'].toString(),
+                                  child: Text(
+                                      snap
+                                          .data
+                                          .snapshot
+                                          .value[
+                                              snap.data.snapshot.value.length -
+                                                  1]['priority']
+                                          .toString(),
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold)),
                                 ),
@@ -986,6 +1007,247 @@ class SettingsScreen extends StatelessWidget {
 }
 
 class TicketsScreen extends StatelessWidget {
+  bool selectedAreaChip1 = false;
+  bool selectedAreaChip2 = false;
+  bool selectedAreaChip3 = false;
+  bool selectedAreaChip4 = false;
+  bool selectedAreaChip5 = false;
+  bool selectedPriorityChip1 = false;
+  bool selectedPriorityChip2 = false;
+  bool selectedPriorityChip3 = false;
+  String issueName;
+  String selectedArea;
+  int selectedPriority;
+
+  void addTicketScreen(context) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            child: Container(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: new Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0))),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 10, top: 30),
+                        child: Text('New Ticket',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(40, 40, 40, 10),
+                        child: TextField(
+                          onChanged: (inputtext) {
+                            issueName = inputtext;
+                          },
+                          decoration: InputDecoration(
+                              labelText: 'Ticket Title',
+                              fillColor: Colors.white,
+                              border: new OutlineInputBorder(
+                                borderRadius: new BorderRadius.circular(5.0),
+                                borderSide: new BorderSide(),
+                              )),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(40, 0, 40, 0),
+                        height: 80,
+                        width: double.infinity,
+                        child: ListView(
+                          scrollDirection: prefix1.Axis.horizontal,
+                          children: <Widget>[
+                            Container(
+                              margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: ChoiceChip(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                label: Text('Area 1'),
+                                selected: selectedAreaChip1,
+                                onSelected: (selectedval) {
+                                  selectedAreaChip1 = selectedval;
+                                  selectedAreaChip2 = false;
+                                  selectedAreaChip3 = false;
+                                  selectedAreaChip4 = false;
+                                  selectedAreaChip5 = false;
+                                  selectedArea = 'Area 1';
+                                },
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: ChoiceChip(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                label: Text('Area 2'),
+                                selected: selectedAreaChip2,
+                                onSelected: (selectedval) {
+                                  selectedAreaChip2 = selectedval;
+                                  selectedAreaChip1 = false;
+                                  selectedAreaChip3 = false;
+                                  selectedAreaChip4 = false;
+                                  selectedAreaChip5 = false;
+                                  selectedArea = 'Area 2';
+                                },
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: ChoiceChip(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                label: Text('Area 3'),
+                                selected: selectedAreaChip3,
+                                onSelected: (selectedval) {
+                                  selectedAreaChip3 = selectedval;
+                                  selectedAreaChip1 = false;
+                                  selectedAreaChip2 = false;
+                                  selectedAreaChip4 = false;
+                                  selectedAreaChip5 = false;
+                                  selectedArea = 'Area 3';
+                                },
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: ChoiceChip(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                label: Text('Area 4'),
+                                selected: selectedAreaChip4,
+                                onSelected: (selectedval) {
+                                  selectedAreaChip4 = selectedval;
+                                  selectedAreaChip1 = false;
+                                  selectedAreaChip2 = false;
+                                  selectedAreaChip3 = false;
+                                  selectedAreaChip5 = false;
+                                  selectedArea = 'Area 4';
+                                },
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: ChoiceChip(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+                                label: Text('Area 5'),
+                                selected: selectedAreaChip5,
+                                onSelected: (selectedval) {
+                                  selectedAreaChip5 = selectedval;
+                                  selectedAreaChip1 = false;
+                                  selectedAreaChip2 = false;
+                                  selectedAreaChip3 = false;
+                                  selectedAreaChip4 = false;
+                                  selectedArea = 'Area 5';
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(bottom: 40),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: ChoiceChip(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  padding: EdgeInsets.all(15),
+                                  label: Text('1'),
+                                  selected: selectedPriorityChip1,
+                                  onSelected: (selectedval) {
+                                    selectedPriorityChip1 = selectedval;
+                                    selectedPriorityChip2 = false;
+                                    selectedPriorityChip3 = false;
+                                    selectedPriority = 1;
+                                  },
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: ChoiceChip(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  padding: EdgeInsets.all(15),
+                                  label: Text('2'),
+                                  selected: selectedPriorityChip2,
+                                  onSelected: (selectedval) {
+                                    selectedPriorityChip2 = selectedval;
+                                    selectedPriorityChip1 = false;
+                                    selectedPriorityChip3 = false;
+                                    selectedPriority = 2;
+                                  },
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: ChoiceChip(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  padding: EdgeInsets.all(15),
+                                  label: Text('3'),
+                                  selected: selectedPriorityChip3,
+                                  onSelected: (selectedval) {
+                                    selectedPriorityChip3 = selectedval;
+                                    selectedPriorityChip1 = false;
+                                    selectedPriorityChip2 = false;
+                                    selectedPriority = 3;
+                                  },
+                                ),
+                              ),
+                            ],
+                          )),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 40),
+                        child: ButtonTheme(
+                          height: 50,
+                          minWidth: 200,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                          child: new RaisedButton.icon(
+                            onPressed: () {
+                              submitTickets(issueName,selectedArea,selectedPriority,context);
+                            },
+                            icon: Icon(Icons.send),
+                            label: Text("Submit"),
+                            color: Colors.indigo,
+                            textColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -999,6 +1261,23 @@ class TicketsScreen extends StatelessWidget {
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
             ),
           ),
+          Container(
+            child: ButtonTheme(
+              height: 50,
+              minWidth: 250,
+              shape: new RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              child: new RaisedButton.icon(
+                onPressed: () {
+                  addTicketScreen(context);
+                },
+                icon: Icon(Icons.add),
+                label: Text("Add Ticket"),
+                color: Colors.indigo,
+                textColor: Colors.white,
+              ),
+            ),
+          )
         ]));
   }
 }
@@ -1018,8 +1297,48 @@ void deleteRecord(recordindex, context) {
     var synclist = new List<dynamic>.from(snapshot.value);
     synclist.removeAt(recordindex);
     var newRecordRef = FirebaseDatabase.instance.reference().child('data/');
-    newRecordRef.set(synclist).then((Future) {
+    newRecordRef.set(synclist).then((future) {
       Navigator.pop(context);
     });
   });
+}
+
+void submitTickets(issueName, issueArea, issuePriority, context) {
+  var datenow = new DateTime.now();
+  var df = new DateFormat('yyyy-MM-dd').format(datenow);
+  var timenow = new TimeOfDay.now();
+  var tf = timenow.hour.toString() + ":" + timenow.minute.toString();
+  if (issueName != null && issueArea != null && issuePriority != null) {
+    databaseReference.child('ticket').once().then((DataSnapshot snapshot) {
+      if (snapshot.value == null) {
+        var newTicketRef =
+        FirebaseDatabase.instance.reference().child('ticket/0');
+        newTicketRef.update({
+          'area': issueArea,
+          'issue': issueName,
+          'priority': issuePriority.toString(),
+          'date' : df.toString(),
+          'time' : tf,
+          'pic' : '',
+          'status' : 'ONGOING',
+        }).then((future) {
+          Navigator.pop(context);
+        });
+      } else {
+        var newTicketRef =
+        FirebaseDatabase.instance.reference().child('ticket/' + snapshot.value.length.toString());
+        newTicketRef.update({
+          'area': issueArea,
+          'issue': issueName,
+          'priority': issuePriority.toString(),
+          'date' : df.toString(),
+          'time' : tf,
+          'pic' : '',
+          'status' : 'ONGOING',
+        }).then((future) {
+          Navigator.pop(context);
+        });
+      }
+    });
+  }
 }
