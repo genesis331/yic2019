@@ -6,7 +6,12 @@ p{
     text-align: center;
     font-size: 36px
 }
-div style{
+div {
     text-align: center;
-         
+    display: inline-block;
+}
+
+.center-container {
+    width: 100%;
+    text-align: center;
 }

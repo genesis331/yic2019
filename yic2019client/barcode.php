@@ -16,7 +16,7 @@ $visitid = $_SESSION['visitid'];
 <body>
 
    <p>Here is your barcode, thanks for using our application	</p>
-   <div style="width:300px;height:100px;border:1px solid #000;">barcode</div>  
+   <div class="center-container"><div style="width:300px;height:100px;border:1px solid #000;">barcode</div></div>
 	<p>Please bring along your Identity Card for your vertification</p>
 
 </body>
