@@ -210,10 +210,10 @@ class _HomeScreenState extends State<HomeScreen> {
             StreamBuilder(
               stream: ticketsRef.onValue,
               builder: (context, snap) {
-                int index1 = snap.data.snapshot.value.length - 1;
                 if (snap.hasData &&
                     !snap.hasError &&
                     snap.data.snapshot.value != null) {
+                  int index1 = snap.data.snapshot.value.length - 1;
                   return GestureDetector(
                     onLongPress: () {
                       HapticFeedback.lightImpact();
@@ -1512,10 +1512,8 @@ class TicketsScreen extends StatelessWidget {
                         );
                       });
                 } else {
-                  return Container(
-                    height: 140,
-                    width: 300,
-                    child: CircularProgressIndicator(),
+                  return Padding(
+                    padding: EdgeInsets.only(top: 10.0),
                   );
                 }
               },
@@ -1648,11 +1646,27 @@ class _TicketOverviewScreenState extends State<TicketOverviewScreen> {
                                           Radius.circular(10.0))),
                                   child: new RaisedButton.icon(
                                     onPressed: () {
-                                      //TODO()
+                                      deleteTicket(widget.ticketIndex, context);
                                     },
                                     icon: Icon(Icons.delete),
                                     label: Text("Delete"),
                                     color: Colors.red,
+                                    textColor: Colors.white,
+                                  ),
+                                );
+                              } else if (widget.ticketData[widget.ticketIndex]
+                              ['status'] == 'RESOLVED') {
+                                return ButtonTheme(
+                                  height: 50,
+                                  minWidth: 150,
+                                  shape: new RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0))),
+                                  child: new RaisedButton.icon(
+                                    disabledColor: Colors.lightGreenAccent,
+                                    icon: Icon(Icons.done_all),
+                                    label: Text("Resolved"),
+                                    color: Colors.green,
                                     textColor: Colors.white,
                                   ),
                                 );
@@ -1665,9 +1679,9 @@ class _TicketOverviewScreenState extends State<TicketOverviewScreen> {
                                           Radius.circular(10.0))),
                                   child: new RaisedButton.icon(
                                     onPressed: () {
-                                      //TODO()
+                                      markResolve(widget.ticketIndex, context);
                                     },
-                                    icon: Icon(Icons.delete),
+                                    icon: Icon(Icons.done),
                                     label: Text("Resolve"),
                                     color: Colors.green,
                                     textColor: Colors.white,
@@ -1704,6 +1718,28 @@ void deleteRecord(recordindex, context) {
     synclist.removeAt(recordindex);
     var newRecordRef = FirebaseDatabase.instance.reference().child('data/');
     newRecordRef.set(synclist).then((future) {
+      Navigator.pop(context);
+    });
+  });
+}
+
+void deleteTicket(ticketindex, context) {
+  databaseReference.child('ticket').once().then((DataSnapshot snapshot) {
+    var synclist = new List<dynamic>.from(snapshot.value);
+    synclist.removeAt(ticketindex);
+    var newRecordRef = FirebaseDatabase.instance.reference().child('ticket/');
+    newRecordRef.set(synclist).then((future) {
+      Navigator.pop(context);
+    });
+  });
+}
+
+void markResolve(ticketindex, context) {
+  databaseReference.child('ticket').once().then((DataSnapshot snapshot) {
+    var newRecordRef = FirebaseDatabase.instance
+        .reference()
+        .child('ticket/' + ticketindex.toString());
+    newRecordRef.update({'status': 'RESOLVED'}).then((future) {
       Navigator.pop(context);
     });
   });
