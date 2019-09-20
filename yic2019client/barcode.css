@@ -22,3 +22,8 @@ p{
     text-align: center;
     font-size: 34px
 }
+
+#barcode {
+    height: 100%;
+    width: 100%;
+}
