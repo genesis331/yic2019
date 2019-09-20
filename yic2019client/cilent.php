@@ -27,7 +27,8 @@ if(isset($_POST['btnlogin'])){
 <body>
     <h1>IntelliGuard</h1>
     <p>Welcome to IntelliGuard, please fill ur Visitid below:</p>
-<div>
+    <h2>Brings you to a pleasurable experience</h2>
+    <div>
     <form method="POST">
     <input type="text" name="visitid" placeholder="visitid" required> 
     <i> =<?php if ($errorvisitid== true){echo $errorvisitidMessage;}?></I>
