@@ -1,8 +1,11 @@
+  
 body{
-    background-image: url("background.png");
+    background-image: url("background.jpg");
     background-size: cover;
+    
 }
-p{
+h1{
+    padding-top: 100px;
     text-align: center;
     font-size: 36px
 }
@@ -14,4 +17,8 @@ div {
 .center-container {
     width: 100%;
     text-align: center;
+}
+p{
+    text-align: center;
+    font-size: 34px
 }
