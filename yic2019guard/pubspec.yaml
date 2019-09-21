@@ -15,10 +15,17 @@ dependencies:
   intl:
   localstorage:
   flutter_local_notifications:
+  flutter_launcher_icons:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/icon.jpg"
+  adaptive_icon_background: "#000000"
 
 flutter:
   uses-material-design: true
