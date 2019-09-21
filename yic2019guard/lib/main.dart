@@ -3,14 +3,36 @@ import 'package:flutter/cupertino.dart' as prefix1;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
 bool isAdmin = false;
+
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    new FlutterLocalNotificationsPlugin();
+
+var initializationSettingsAndroid =
+    new AndroidInitializationSettings('launch_background');
+var initializationSettingsIOS = new IOSInitializationSettings(
+    onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+var initializationSettings = new InitializationSettings(
+    initializationSettingsAndroid, initializationSettingsIOS);
+
+var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    '3310', 'IntelliGuard', 'Notifications for IntelliGuard App',
+    importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+var platformChannelSpecifics = NotificationDetails(
+    androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+
+Future onDidReceiveLocalNotification(
+    int id, String title, String body, String payload) async {
+    print('Hi');
+}
 
 void main() => runApp(MyApp());
 
@@ -100,6 +122,24 @@ void checkAdminStatus() {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
+    var first = true;
+    databaseReference.child('ticket').limitToLast(1).onChildAdded.listen((Event event) {
+      if ( first ) {
+        first = false;
+      }
+      else {
+        flutterLocalNotificationsPlugin.show(
+            0, 'New Ticket Arrived', 'A ticket has been added by admin.', platformChannelSpecifics,
+            payload: 'IntelliGuard');
+      }
+    });
+    databaseReference.child('ticket').onChildRemoved.listen((Event event) {
+      flutterLocalNotificationsPlugin.show(
+          0, 'Ticket Removed', 'A ticket has been removed by admin.', platformChannelSpecifics,
+          payload: 'IntelliGuard');
+    });
     return Scaffold(
         backgroundColor: Colors.black,
         body: Column(
@@ -119,6 +159,9 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                image: DecorationImage(
+                  image: AssetImage('assets/images/chart.png')
+                )
               ),
             ),
             Container(
@@ -1655,7 +1698,8 @@ class _TicketOverviewScreenState extends State<TicketOverviewScreen> {
                                   ),
                                 );
                               } else if (widget.ticketData[widget.ticketIndex]
-                              ['status'] == 'RESOLVED') {
+                                      ['status'] ==
+                                  'RESOLVED') {
                                 return ButtonTheme(
                                   height: 50,
                                   minWidth: 150,
@@ -1663,6 +1707,7 @@ class _TicketOverviewScreenState extends State<TicketOverviewScreen> {
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.0))),
                                   child: new RaisedButton.icon(
+                                    onPressed: null,
                                     disabledColor: Colors.lightGreenAccent,
                                     icon: Icon(Icons.done_all),
                                     label: Text("Resolved"),
@@ -1784,4 +1829,11 @@ void submitTickets(issueName, issueArea, issuePriority, context) {
       }
     });
   }
+}
+
+Future onSelectNotification(String payload) async {
+  if (payload != null) {
+    debugPrint('notification payload: ' + payload);
+  }
+  print('Hi');
 }
