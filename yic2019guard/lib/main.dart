@@ -30,9 +30,7 @@ var platformChannelSpecifics = NotificationDetails(
     androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
 Future onDidReceiveLocalNotification(
-    int id, String title, String body, String payload) async {
-    print('Hi');
-}
+    int id, String title, String body, String payload) async {}
 
 void main() => runApp(MyApp());
 
@@ -125,19 +123,22 @@ class _HomeScreenState extends State<HomeScreen> {
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
     var first = true;
-    databaseReference.child('ticket').limitToLast(1).onChildAdded.listen((Event event) {
-      if ( first ) {
+    databaseReference
+        .child('ticket')
+        .limitToLast(1)
+        .onChildAdded
+        .listen((Event event) {
+      if (first) {
         first = false;
-      }
-      else {
-        flutterLocalNotificationsPlugin.show(
-            0, 'New Ticket Arrived', 'A ticket has been added by admin.', platformChannelSpecifics,
+      } else {
+        flutterLocalNotificationsPlugin.show(0, 'New Ticket Arrived',
+            'A ticket has been added by admin.', platformChannelSpecifics,
             payload: 'IntelliGuard');
       }
     });
     databaseReference.child('ticket').onChildRemoved.listen((Event event) {
-      flutterLocalNotificationsPlugin.show(
-          0, 'Ticket Removed', 'A ticket has been removed by admin.', platformChannelSpecifics,
+      flutterLocalNotificationsPlugin.show(0, 'Ticket Removed',
+          'A ticket has been removed by admin.', platformChannelSpecifics,
           payload: 'IntelliGuard');
     });
     return Scaffold(
@@ -155,13 +156,28 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Container(
               height: 300,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                image: DecorationImage(
-                  image: AssetImage('assets/images/chart.png')
-                )
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  Container(
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/chart.png'))),
+                  ),
+                  Container(
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/chart2.png'))),
+                  ),
+                ],
               ),
             ),
             Container(
@@ -1576,6 +1592,8 @@ class TicketOverviewScreen extends StatefulWidget {
 }
 
 class _TicketOverviewScreenState extends State<TicketOverviewScreen> {
+  String issueReport;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1674,6 +1692,33 @@ class _TicketOverviewScreenState extends State<TicketOverviewScreen> {
                             ],
                           )),
                       Container(
+                        child: StreamBuilder(builder: (context, snap) {
+                          if (widget.ticketData[widget.ticketIndex]
+                          ['pic'] != '') {
+                            return Container(
+                              padding: EdgeInsets.only(left: 20,top: 30),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Text('Report:',style: TextStyle(fontWeight: FontWeight.bold))
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(widget.ticketData[widget.ticketIndex]
+                                      ['pic'])
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          } else {
+                            return Padding(padding: EdgeInsets.only(top: 5));
+                          }
+                        }),
+                      ),
+                      Container(
                         padding: EdgeInsets.fromLTRB(0, 30, 0, 25),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -1716,21 +1761,141 @@ class _TicketOverviewScreenState extends State<TicketOverviewScreen> {
                                   ),
                                 );
                               } else {
-                                return ButtonTheme(
-                                  height: 50,
-                                  minWidth: 150,
-                                  shape: new RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0))),
-                                  child: new RaisedButton.icon(
-                                    onPressed: () {
-                                      markResolve(widget.ticketIndex, context);
-                                    },
-                                    icon: Icon(Icons.done),
-                                    label: Text("Resolve"),
-                                    color: Colors.green,
-                                    textColor: Colors.white,
-                                  ),
+                                return Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 5),
+                                      child: ButtonTheme(
+                                        height: 50,
+                                        minWidth: 150,
+                                        shape: new RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0))),
+                                        child: new RaisedButton.icon(
+                                          onPressed: () {
+                                            markResolve(
+                                                widget.ticketIndex, context);
+                                          },
+                                          icon: Icon(Icons.done),
+                                          label: Text("Resolve"),
+                                          color: Colors.green,
+                                          textColor: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 5),
+                                      child: ButtonTheme(
+                                        height: 50,
+                                        minWidth: 150,
+                                        shape: new RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0))),
+                                        child: new RaisedButton.icon(
+                                          onPressed: () {
+                                            showModalBottomSheet(
+                                                isScrollControlled: true,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return SingleChildScrollView(
+                                                      child: Container(
+                                                          padding: EdgeInsets.only(
+                                                              bottom: MediaQuery
+                                                                      .of(
+                                                                          context)
+                                                                  .viewInsets
+                                                                  .bottom),
+                                                          child: new Container(
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  borderRadius: BorderRadius.only(
+                                                                      topLeft: Radius
+                                                                          .circular(
+                                                                              30.0),
+                                                                      topRight:
+                                                                          Radius.circular(
+                                                                              30.0))),
+                                                              child: Column(
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Container(
+                                                                      margin: EdgeInsets.only(
+                                                                          left:
+                                                                              10,
+                                                                          top:
+                                                                              30),
+                                                                      child: Text(
+                                                                          'Report Issue',
+                                                                          style: TextStyle(
+                                                                              fontSize: 20,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.black)),
+                                                                    ),
+                                                                    Container(
+                                                                        margin: EdgeInsets.fromLTRB(
+                                                                            40,
+                                                                            40,
+                                                                            40,
+                                                                            60),
+                                                                        child:
+                                                                            TextField(
+                                                                          onChanged:
+                                                                              (inputtext) {
+                                                                            issueReport =
+                                                                                inputtext;
+                                                                          },
+                                                                        )),
+                                                                    Container(
+                                                                      padding: EdgeInsets.only(
+                                                                          bottom:
+                                                                              50),
+                                                                      child:
+                                                                          ButtonTheme(
+                                                                        height:
+                                                                            50,
+                                                                        minWidth:
+                                                                            150,
+                                                                        shape: new RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.all(Radius.circular(10.0))),
+                                                                        child: new RaisedButton
+                                                                            .icon(
+                                                                          onPressed: () {
+                                                                            var updateIssueRef = FirebaseDatabase.instance
+                                                                                .reference()
+                                                                                .child('ticket/' + widget.ticketIndex.toString());
+                                                                            updateIssueRef.update({
+                                                                              'pic': issueReport,
+                                                                            }).then((future) {
+                                                                              Navigator.pop(context);
+                                                                            });
+                                                                          },
+                                                                          icon:
+                                                                              Icon(Icons.send),
+                                                                          label:
+                                                                              Text("Submit"),
+                                                                          color:
+                                                                              Colors.blue,
+                                                                          textColor:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  ]))));
+                                                });
+                                          },
+                                          icon: Icon(Icons.report),
+                                          label: Text("Report"),
+                                          color: Colors.red,
+                                          textColor: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 );
                               }
                             })
@@ -1835,5 +2000,4 @@ Future onSelectNotification(String payload) async {
   if (payload != null) {
     debugPrint('notification payload: ' + payload);
   }
-  print('Hi');
 }
