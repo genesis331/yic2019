@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Visit ID Barcode</title>
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+        <meta name="description" content="Web Client for IntelliGuard">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../style/welcome.css">
+        <link rel="icon" href="../assets/icon.jpg">
+    </head>
+    <body>
+        <div class="bg-overlay"></div>
+        <div class="content-overlay">
+            <div class="center-div">
+                <div class="content-div">
+                    <div class="user-icon">
+                        <img src="../assets/checked.png">
+                    </div>
+                    <div class="barcode-box">
+                        <img id="barcode-content">
+                    </div>
+                    <div id="id-content"></div>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/JsBarcode.all.min.js"></script>
+        <script src="../script/welcome.js"></script>
+    </body>
+</html>

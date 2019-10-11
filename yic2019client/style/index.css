@@ -1,0 +1,132 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    font-size: 10px;
+    color: white;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.bg-overlay {
+    height: 100%;
+    width: 100%;
+    background: url("../assets/bg.jpg") no-repeat center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.content-overlay {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+}
+
+.center-div {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-block;
+    height: 50rem;
+    width: 60rem;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255,255,255,0.3);
+    border-radius: 2rem;
+}
+
+.content-div {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.user-icon img {
+    height: 8rem;
+}
+
+.text-content1 {
+    font-size: 3rem;
+    padding: 1rem 0;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.text-content2 {
+    font-size: 1.6rem;
+    padding: 1rem 0;
+}
+
+.form-content {
+    margin: 2rem 0 0 0;
+}
+
+.form-content-input {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.input-box {
+    display: inline-block;
+    vertical-align: middle;
+    height: 6rem;
+    width: 28rem;
+    background-color: white;
+    border-radius: 1rem;
+}
+
+.input-box input {
+    height: 70%;
+    width: 80%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    font-size: 2.5rem;
+    border: none;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.input-box input:focus {
+    outline: none;
+}
+
+.input-box input::placeholder {
+    color: rgb(209, 209, 209);
+}
+
+.submit-button {
+    vertical-align: middle;
+    height: 5.5rem;
+    width: 5.5rem;
+    margin-left: 0.5rem;
+    border: none;
+    text-align: center;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.submit-button img {
+    height: 80%;
+}
+
+.submit-button:focus {
+    outline: none;
+}
+
+@media only screen and (max-width: 540px) {
+    html, body {
+        font-size: 8px !important;
+    }
+
+    .center-div {
+        height: 50%;
+        width: 90%;
+    }
+}
