@@ -12,7 +12,7 @@ function getParameterByName(name, url) {
 }
 
 JsBarcode("#barcode-content", getParameterByName('visitid'), {
-    format: "pharmacode",
+    format: "CODE128C",
     lineColor: "#000000",
     displayValue: false
   });

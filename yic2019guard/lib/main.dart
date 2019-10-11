@@ -143,278 +143,292 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     return Scaffold(
         backgroundColor: Colors.black,
-        body: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.fromLTRB(20, 30, 0, 30),
-              child: AppBar(
-                backgroundColor: Colors.transparent,
-                title: Text('Dashboard',
-                    style:
-                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 20, 0, 30),
+                child: AppBar(
+                  backgroundColor: Colors.transparent,
+                  title: Text('Dashboard',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                ),
               ),
-            ),
-            Container(
-              height: 300,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Container(
-                    height: 300,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/chart.png'))),
-                  ),
-                  Container(
-                    height: 300,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/chart2.png'))),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    width: 250,
-                    height: 60,
-                    child: ButtonTheme(
-                      height: 50,
-                      minWidth: double.infinity,
-                      shape: new RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      child: new RaisedButton.icon(
-                        onPressed: () {
-                          databaseReference
-                              .child('data')
-                              .once()
-                              .then((DataSnapshot snapshot) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => AllVisitorScreen(
-                                        dbdata: snapshot.value,
-                                        dbref: allVisitorsRef)));
-                          });
-                        },
-                        icon: Icon(Icons.remove_red_eye),
-                        label: Text("See Visitors"),
-                        color: Colors.indigo,
-                        textColor: Colors.white,
-                      ),
+              Container(
+                height: 250,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Container(
+                      height: 250,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/chart.png'))),
                     ),
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: 60,
-                      height: 60,
+                    Container(
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        color: Colors.indigo,
-                      ),
-                      child: ButtonTheme(
-                        height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                        child: IconButton(
-                          icon: Icon(Icons.settings),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SettingsScreen()));
-                          },
                           color: Colors.white,
-                        ),
-                      )),
-                  Container(
-                      margin: EdgeInsets.only(left: 10),
-                      width: 60,
-                      height: 60,
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/chart1.png'))),
+                    ),
+                    Container(
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        color: Colors.indigo,
-                      ),
-                      child: ButtonTheme(
-                        height: 50,
-                        shape: new RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                        child: IconButton(
-                          icon: Icon(Icons.warning),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TicketsScreen()));
-                          },
                           color: Colors.white,
-                        ),
-                      )),
-                ],
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          image: DecorationImage(
+                              image: AssetImage('assets/images/chart2.png'))),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            StreamBuilder(
-              stream: ticketsRef.onValue,
-              builder: (context, snap) {
-                if (snap.hasData &&
-                    !snap.hasError &&
-                    snap.data.snapshot.value != null) {
-                  int index1 = snap.data.snapshot.value.length - 1;
-                  return GestureDetector(
-                    onLongPress: () {
-                      HapticFeedback.lightImpact();
-                      Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (c, a1, a2) => TicketOverviewScreen(
-                                ticketIndex:
-                                    snap.data.snapshot.value.length - 1,
-                                ticketData: snap.data.snapshot.value),
-                            transitionDuration: Duration(milliseconds: 400),
-                          ));
-                    },
-                    child: Hero(
-                      tag: 'ticketcard' + index1.toString(),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-                          height: 140,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                Colors.indigo[800],
-                                Colors.indigo[400],
-                              ],
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
+              Container(
+                margin: EdgeInsets.only(top: 20),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        width: 200,
+                        height: 60,
+                        child: ButtonTheme(
+                          height: 50,
+                          minWidth: double.infinity,
+                          shape: new RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0))),
+                          child: new RaisedButton.icon(
+                            onPressed: () {
+                              databaseReference
+                                  .child('data')
+                                  .once()
+                                  .then((DataSnapshot snapshot) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AllVisitorScreen(
+                                            dbdata: snapshot.value,
+                                            dbref: allVisitorsRef)));
+                              });
+                            },
+                            icon: Icon(Icons.remove_red_eye),
+                            label: Text("See Visitors"),
+                            color: Colors.indigo,
+                            textColor: Colors.white,
                           ),
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.fromLTRB(20, 20, 15, 10),
-                                child: Row(
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text(
-                                          snap.data.snapshot.value[
-                                              snap.data.snapshot.value.length -
-                                                  1]['status'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold)),
-                                    ),
-                                    Container(
-                                      child: Text(snap.data.snapshot.value[
-                                          snap.data.snapshot.value.length -
-                                              1]['date']),
-                                      padding: EdgeInsets.only(left: 10),
-                                    ),
-                                    Container(
-                                      child: Text(snap.data.snapshot.value[
-                                          snap.data.snapshot.value.length -
-                                              1]['time']),
-                                      padding: EdgeInsets.only(left: 10),
-                                    ),
-                                  ],
-                                ),
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(left: 10),
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            color: Colors.indigo,
+                          ),
+                          child: ButtonTheme(
+                            height: 50,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                            child: IconButton(
+                              icon: Icon(Icons.settings),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SettingsScreen()));
+                              },
+                              color: Colors.white,
+                            ),
+                          )),
+                      Container(
+                          margin: EdgeInsets.only(left: 10),
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            color: Colors.indigo,
+                          ),
+                          child: ButtonTheme(
+                            height: 50,
+                            shape: new RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                            child: IconButton(
+                              icon: Icon(Icons.warning),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TicketsScreen()));
+                              },
+                              color: Colors.white,
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+              ),
+              StreamBuilder(
+                stream: ticketsRef.onValue,
+                builder: (context, snap) {
+                  if (snap.hasData &&
+                      !snap.hasError &&
+                      snap.data.snapshot.value != null) {
+                    int index1 = snap.data.snapshot.value.length - 1;
+                    return GestureDetector(
+                      onLongPress: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (c, a1, a2) => TicketOverviewScreen(
+                                  ticketIndex:
+                                      snap.data.snapshot.value.length - 1,
+                                  ticketData: snap.data.snapshot.value),
+                              transitionDuration: Duration(milliseconds: 400),
+                            ));
+                      },
+                      child: Hero(
+                        tag: 'ticketcard' + index1.toString(),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+                            height: 140,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  Colors.indigo[800],
+                                  Colors.indigo[400],
+                                ],
                               ),
-                              Container(
-                                padding: EdgeInsets.fromLTRB(40, 0, 15, 10),
-                                width: double.infinity,
-                                child: SingleChildScrollView(
-                                  scrollDirection: prefix1.Axis.horizontal,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(20, 20, 15, 10),
                                   child: Row(
                                     children: <Widget>[
                                       Container(
                                         child: Text(
-                                            snap.data.snapshot.value[snap.data
-                                                    .snapshot.value.length -
-                                                1]['issue'],
+                                            snap.data.snapshot.value[
+                                                snap.data.snapshot.value.length -
+                                                    1]['status'],
                                             style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 28)),
+                                                fontWeight: FontWeight.bold)),
                                       ),
                                       Container(
-                                        child: Text('at '),
+                                        child: Text(snap.data.snapshot.value[
+                                            snap.data.snapshot.value.length -
+                                                1]['date']),
                                         padding: EdgeInsets.only(left: 10),
                                       ),
                                       Container(
-                                        child: Text(
-                                            snap.data.snapshot.value[snap.data
-                                                    .snapshot.value.length -
-                                                1]['area'],
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
+                                        child: Text(snap.data.snapshot.value[
+                                            snap.data.snapshot.value.length -
+                                                1]['time']),
+                                        padding: EdgeInsets.only(left: 10),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                              Container(
-                                  padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Container(
-                                        child: Text('Priority: '),
-                                      ),
-                                      Container(
-                                        child: Text(
-                                            snap
-                                                .data
-                                                .snapshot
-                                                .value[snap.data.snapshot.value
-                                                        .length -
-                                                    1]['priority']
-                                                .toString(),
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      ),
-                                    ],
-                                  ))
-                            ],
+                                Container(
+                                  padding: EdgeInsets.fromLTRB(40, 0, 15, 10),
+                                  width: double.infinity,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: prefix1.Axis.horizontal,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text(
+                                              snap.data.snapshot.value[snap.data
+                                                      .snapshot.value.length -
+                                                  1]['issue'],
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 28)),
+                                        ),
+                                        Container(
+                                          child: Text('at '),
+                                          padding: EdgeInsets.only(left: 10),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                              snap.data.snapshot.value[snap.data
+                                                      .snapshot.value.length -
+                                                  1]['area'],
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Container(
+                                          child: Text('Priority: '),
+                                        ),
+                                        Container(
+                                          child: Text(
+                                              snap
+                                                  .data
+                                                  .snapshot
+                                                  .value[snap.data.snapshot.value
+                                                          .length -
+                                                      1]['priority']
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                      ],
+                                    ))
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                } else {
-                  return Container(
-                    margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-                    height: 140,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          Colors.indigo[800],
-                          Colors.indigo[400],
-                        ],
+                    );
+                  } else {
+                    return Container(
+                      margin: EdgeInsets.only(top: 20, left: 10, right: 10),
+                      height: 140,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            Colors.indigo[800],
+                            Colors.indigo[400],
+                          ],
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ));
   }
 }
